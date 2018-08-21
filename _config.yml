@@ -73,7 +73,7 @@ pagination_dir: page
 # Extensions
 ## Plugins: https://hexo.io/plugins/
 ## Themes: https://hexo.io/themes/
-theme: clexy
+theme: next
 
 prism_plugin:
   mode: 'preprocess'    # realtime/preprocess
@@ -85,4 +85,4 @@ prism_plugin:
 deploy:
   type: git
   repo: git@github.com:FeiXie-Liam/feixie-liam.github.io.git
-  branch: gh-pages
+  branch: master
