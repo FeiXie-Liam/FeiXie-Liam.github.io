@@ -26,4 +26,4 @@ after_success:
   - git init
   - git add .
   - git commit -m "Travis CI Auto Builder"
-  - git push --force --quiet "https://${GITHUB_TOKEN}@{GH_REF}" gh-src:master
+  - git push --force --quiet "https://${GH_TOKEN}@{GH_REF}" gh-src:master
