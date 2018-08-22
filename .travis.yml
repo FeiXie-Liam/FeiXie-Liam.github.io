@@ -3,21 +3,27 @@ env:
     - GH_REF: github.com/FeiXie-Liam/Feixie-Liam.github.io.git
     - secure: F9VQt/P+qphNsy+0+41mQtTYIPmFmM8N7pb5mMPsqbUbu7AlmzJ296vDx0TNpmiwJfDSUMLARnbP7lNPQddqiLrQ/V9ZaH0p7AYtJnsdzDvTRn+Qlo0W5vEB/xYIlU31tB9EAQjdmJ3ueyNE2gnEPeIqAMjJCNNdrQU0UDB+TDpbTjQYLE9ev83Bou8p235Y9z8Jbo2cMeIBv8jt6fC7HZk86tkMKJ9CEmDATzkD+gmuRdzylP3cePgMIhUzBBJFR2kTdNZ6zhpkc0tT5+jkYEM0Hr26UAWXWnvdmRXfoHowAalyoCypNp2Pn2H/IhIjnkPXsVpUJHvvdDUPabJPPHMnYKiZ21GMYwl5CL3K5a2Q3WDx9KLr3HIiTnXRPyx7Ocd5L8GK++YlHRH4sDVMbIzsuQscCItshoCLKgG5vKy23WSmhCgLZykhJMi3SwCs4/CrN/HDyvz+BDo6HPGSlpJ14fE6NO7eqqv9CmmnRPI3pH/JF0W1vP2h8PLHzzVkvv1R5gUZCDu/DhNWH6sJuE85kbg709ZfYlGE7CCSSfrvoV37jZeXtKiC/nYCjYmWVS2VRZsPXaidpeZmdW30dUK0l92XhoUVz/J6SpCKckCt/Wki6JT94VzzIe7NV6dpq2Ks9HFFLBGeKNbMNJvzJeCCLhtpOIvP8iuKTIYKbOg=
 
+language: node_js
+node_js: 8
 branches:
   only:
-  - gh-src
-
+    - blog
+cache:
+  directories:
+    - node_modules
+before_install:
+  - npm install hexo-cli -g
 install:
   - npm install
 before_script:
-  - npm install gulp-cli
-script:
-  - gulp dist
-after_script:
-  - cd dist
-  - git init
   - git config user.name "FeiXie-Liam"
-  - git config user.email "xiefei0887@163.com"
+  - git config user.email xiefei0887@163.com
+script:
+  - hexo cl
+  - hexo g
+after_success:
+  - cd ./public
+  - git init
   - git add .
-  - git commit -m "Update docs"
-  - git push -f "https://${GH_TOKEN}@${GH_REF}" gh-src:gh-pages
+  - git commit -m "Travis CI Auto Builder"
+  - git push --force --quiet "https://${GITHUB_TOKEN}@{GH_REF}" gh-src:master
