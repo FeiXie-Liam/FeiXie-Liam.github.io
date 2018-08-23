@@ -86,3 +86,9 @@ tags:
 
 14. 使用@ConfigurationProperties注解时，prefix属性不能使用驼峰命名法，需要在单词之间加入'-'分割，并全使用小写。
 
+15. 在使用新版本JPA中的`T getOne(ID id);`方法时，如果根据id无法找到对应的实体对象，则会直接抛出异常错误，在以前的版本则会返回一个null对象
+
+16. 当使用Optional包裹对象时，如果对象本身可能会是null，则使用Optional.ofNullable(),否则使用Optional.of()，如果胡乱使用可能会导致异常比如重载`AuditorAware`类的`getCurrentUser()`方法时，新版本需要返回Optional<T>对象，不使用Optional.ofNullable()则可能导致NullPointerException异常。
+
+17. 新版JPA中repository的自带方法中，Pageable参数不能为null，老版本则无此限制。
+
