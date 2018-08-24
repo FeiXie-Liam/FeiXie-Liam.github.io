@@ -2,6 +2,10 @@
 title: spring boot 版本迁移中的坑
 date: 2018-08-22 22:21:40
 tags:
+ - spring boot
+ - 后端
+categories:
+ - 培训
 
 ---
 
