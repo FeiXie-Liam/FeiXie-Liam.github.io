@@ -108,6 +108,53 @@ Contract.make {
 
 注意到本文都是通过在contracts目录下创建对应的json文件，作为body的输入。
 
+## 添加DB-Rider
+
+---
+
+添加DB-Rider使得在测试时，使用DB-Rider生成的数据库数据进行测试，防止原始数据库在测试阶段被修改。
+
+首先添加依赖
+
+```
+    testCompile('com.github.database-rider:rider-spring:1.2.9') {
+        exclude group: 'org.slf4j', module: 'slf4j-simple'
+    }
+```
+
+在ProductBaseTest中添加DB-rider的相关注解
+
+```java
+@RunWith(SpringRunner.class)
+@SpringBootTest(classes = ContractApplication.class, webEnvironment = SpringBootTest.WebEnvironment.MOCK)
+@DBRider
+@ActiveProfiles("test")
+@DBUnit(caseSensitiveTableNames = true)
+@DataSet("product.yml")
+public abstract class ProductBaseTest {
+    @Autowired
+    private ProductController productController;
+
+    @Before
+    public void setup() {
+        StandaloneMockMvcBuilder standaloneMockMvcBuilder = MockMvcBuilders.standaloneSetup(productController);
+        RestAssuredMockMvc.standaloneSetup(standaloneMockMvcBuilder);
+    }
+}
+```
+
+然后在test/resources目录下的创建datasets文件夹，在里面使用yaml格式添加自定义的数据库数据
+
+```yaml
+product:
+  - id: 1
+    name: "苹果"
+  - id: 2
+    name: "笔记本电脑"
+  - id: 3
+    name: "电视机"
+```
+
 ## 测试
 
 ---
