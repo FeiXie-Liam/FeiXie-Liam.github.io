@@ -45,6 +45,16 @@ contracts {
 ...
 ```
 
+如果项目中存在多个controller，需要分别对各个controller进行测试，则需要将contracts任务进行修改
+
+```
+contracts {
+    packageWithBaseClasses = "com.thoughtworks.contract.provider"
+}
+```
+
+然后创建相应实体名称的test基类(eg:ProductBase)，在test/resouces/contracts目录下创建不同实体的Dir储存不同实体的请求。
+
 ## 在测试目录下创建基类测试文件
 
 ---
@@ -155,12 +165,46 @@ product:
     name: "电视机"
 ```
 
+## nexus
+
+---
+
+为了使producer端生成的契约jar包和相关文件能够发布到共有仓库，以便consumer端能够调用，使用docker创建nexus的容器
+
+```
+docker pull sonatype/nexus
+docker run -d -p 8081:8081 --name nexus sonatype/nexus
+```
+
+然后将生成的契约文件自动部署到nexus的容器中，在进行自动部署时，需要在build.gradle中配置依赖
+
+```
+...
+apply plugin: 'maven-publish'
+...
+publishing {
+    repositories {
+        maven {
+            url 'http://localhost:8081/nexus/content/repositories/snapshots/'
+            credentials {
+                username = 'admin'
+                password = 'admin123'
+            }
+        }
+    }
+}
+```
+
 ## 测试
 
 ---
 
 完成代码编写后，通过运行./gradlew build即可自动进行契约测试，contract插件将自动在build/generated-test-sources目录下生成对应的测试文件，进行测试。
 
+## 发布
 
+---
+
+运行./gradlew publishing将build生成的stubs自动发布到nexus上，供consumer端进行调用。
 
 完整示例代码地址：https://github.com/FeiXie-Liam/contract-start-provider
