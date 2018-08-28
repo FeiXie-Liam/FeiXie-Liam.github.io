@@ -3,9 +3,9 @@ title: 如何使用FeignClient
 date: 2018-08-28 21:13:17
 tags:
  - Feign
- - Spring Cloud
+ - spring cloud
 categories:
- - Spring Cloud
+ - spring cloud
 
 ---
 
@@ -31,6 +31,8 @@ dependencyManagement {
     }
 }
 ```
+
+<!--more-->
 
 Ribbon依赖用于自动负载均衡，如果没有使用Euraka服务注册与发现，则需要自己在application.yml文件中进行相应的配置，否则程序运行过程中无法找到Client对应的服务。
 
