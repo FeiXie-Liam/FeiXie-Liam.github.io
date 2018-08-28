@@ -114,6 +114,9 @@ Contract.make {
         url("/products")
     }
     response {
+        headers{
+            Content-Type: application/json;charset=UTF-8
+        }
         body(file("response.json"))
         status(200)
     }
@@ -223,7 +226,6 @@ publishing {
 
 ```
     testCompile ('org.springframework.cloud:spring-cloud-starter-contract-stub-runner')
-
 ```
 
 ### 添加nexus配置
