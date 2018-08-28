@@ -11,9 +11,11 @@ categories:
 
 本文展示了使用Spring Cloud Contract，实现契约测试的必要代码。
 
-Provider端:
+## Provider端:
 
-## 首先配置Contract相关依赖
+---
+
+### 首先配置Contract相关依赖
 
 ---
 
@@ -55,7 +57,7 @@ contracts {
 
 然后创建相应实体名称的test基类(eg:ProductBase)，在test/resouces/contracts目录下创建不同实体的Dir储存不同实体的请求。
 
-## 在测试目录下创建基类测试文件
+### 在测试目录下创建基类测试文件
 
 ---
 
@@ -80,7 +82,7 @@ public abstract class ProductBaseTest {
 
 这里需要注意将基类声明为abstract class，不这样做在运行测试时会对当前测试文件报错:`java.lang.Exception: No runnable methods`
 
-## 创建stubs
+### 创建stubs
 
 ---
 
@@ -96,6 +98,8 @@ request:
 response:
   status: 200
   bodyFromFile: response.json
+  headers:
+    Content-Type: application/json;charset=UTF-8
 ```
 
 groovy
@@ -118,7 +122,7 @@ Contract.make {
 
 注意到本文都是通过在contracts目录下创建对应的json文件，作为body的输入。
 
-## 添加DB-Rider
+### 添加DB-Rider
 
 ---
 
@@ -165,7 +169,7 @@ product:
     name: "电视机"
 ```
 
-## nexus
+### nexus
 
 ---
 
@@ -195,16 +199,77 @@ publishing {
 }
 ```
 
-## 测试
+### 测试
 
 ---
 
 完成代码编写后，通过运行./gradlew build即可自动进行契约测试，contract插件将自动在build/generated-test-sources目录下生成对应的测试文件，进行测试。
 
-## 发布
+### 发布
 
 ---
 
 运行./gradlew publishing将build生成的stubs自动发布到nexus上，供consumer端进行调用。
 
 完整示例代码地址：https://github.com/FeiXie-Liam/contract-start-provider
+
+## consumer端
+
+---
+
+### 配置相关依赖
+
+---
+
+```
+    testCompile ('org.springframework.cloud:spring-cloud-starter-contract-stub-runner')
+
+```
+
+### 添加nexus配置
+
+---
+
+在测试环境的application-test.yml文件中添加配置：
+
+```yaml
+stubrunner:
+  ids: com.thoughtworks:contract:+:stubs:8998
+  repositoryRoot: http://localhost:8081/nexus/content/repositories/snapshots/
+```
+
+需要注意的是在一台电脑上运行provider和consumer服务时，当provider端已经通过某个端口(eg.8090)运行起来时，如果consumer端想要进行契约测试，stubrunner的ids端口不能与provider端的端口相同，否则测试程序会报错，需要将其指定为未被占用的端口。
+
+### 编写测试文件
+
+---
+
+```java
+@RunWith(SpringRunner.class)
+@SpringBootTest(classes = ConsumerApplication.class)
+@AutoConfigureStubRunner(stubsMode = StubRunnerProperties.StubsMode.REMOTE)
+@ActiveProfiles("test")
+public class ConsumerTest {
+
+    @Autowired
+    ProductService productService;
+
+    @Test
+    public void should_return_all_products() {
+        //given
+
+        //when
+        List<Product> actual = productService.getAll();
+        //then
+        ...
+    }
+}
+```
+
+注意在测试文件的类名上添加stub runner的注解`@AutoConfigureStubRunner(stubsMode = StubRunnerProperties.StubsMode.LOCAL)`stubsMode包含LOCAL, CLASSPATH, REMOTE三种方式。
+
+- LOCAL:线下仓库地址 eg. localhost
+- CLASSPATH:项目目录下的问题
+- REMOTE:远程仓库的地址 eg.亚马逊云
+
+完整代码示例：https://github.com/FeiXie-Liam/contract-start-consumer
