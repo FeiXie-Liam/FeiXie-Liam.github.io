@@ -20,6 +20,8 @@ categories:
 
 例如文件名为someTest，默认测试名为：validate_someTest
 
+<!--more-->
+
 groovy:`name(some_test)` 
 
 yaml:`name: ...`
