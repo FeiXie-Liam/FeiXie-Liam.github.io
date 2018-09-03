@@ -1,3 +1,14 @@
+---
+title: JsonPath
+date: 2018-08-30 22:37:06
+tags:
+ - contract
+ - groovy
+ - JsonPath
+categories:
+ - 后端
+---
+
 ## 导入依赖
 
 在build.gradle中添加依赖`compile('com.jayway.jsonpath:json-path:2.1.0')`。
