@@ -11,9 +11,15 @@ categories:
 
 ## 导入依赖
 
+---
+
 在build.gradle中添加依赖`compile('com.jayway.jsonpath:json-path:2.1.0')`。
 
+<!--more-->
+
 ## 语法
+
+---
 
 讲解示例：
 
@@ -59,6 +65,8 @@ categories:
 
 ### 表示方法
 
+---
+
 jsonpath有两种方式表示路径：
 
 dot notation:
@@ -77,6 +85,8 @@ $['store']['book'][2]
 
 ### 运算符
 
+---
+
 在jsonpath中有多个有效的运算符（Operator）
 
 | Operator                  | Description                                                  |
@@ -92,6 +102,8 @@ $['store']['book'][2]
 | `[?(<expression>)]`       | Filter expression. Expression must evaluate to a boolean value. |
 
 ### 方法和过滤器
+
+---
 
 jsonpath支持多个方法：
 
@@ -143,6 +155,8 @@ jsonpath支持多个方法：
 | [$..book.length()](http://jsonpath.herokuapp.com/?path=$..book.length()) | The number of books                                          |
 
 ## 操作方式
+
+---
 
 读取一个json字符串的最简单方式如下:
 
