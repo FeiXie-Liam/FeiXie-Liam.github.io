@@ -1,5 +1,5 @@
 ---
-title: contract dsl
+title: Spring Cloud Contract DSL
 date: 2018-08-31 22:37:06
 tags:
  - contract

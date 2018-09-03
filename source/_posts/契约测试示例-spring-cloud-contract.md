@@ -11,6 +11,8 @@ categories:
 
 本文展示了使用Spring Cloud Contract，实现契约测试的必要代码。
 
+<!--more-->
+
 ## Provider端:
 
 ---
@@ -18,8 +20,6 @@ categories:
 ### 首先配置Contract相关依赖
 
 ---
-
-<!--more-->
 
 build.gradle
 

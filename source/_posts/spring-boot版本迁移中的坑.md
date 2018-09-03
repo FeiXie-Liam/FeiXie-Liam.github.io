@@ -1,5 +1,5 @@
 ---
-title: spring boot 版本迁移中的坑
+title: Spring Boot 版本迁移中的坑
 date: 2018-08-22 22:21:40
 tags:
  - spring boot
@@ -12,6 +12,8 @@ categories:
 # Spring Boot 进行版本迁移中的坑
 
 本文记录了在将项目从spring boot从1.5版本迁移到2.0.4版本中遇到的问题。
+
+<!-- more -->
 
 1. 在`build.gradle`中，首先需要将springBootVersion指定为2.x版本，并加入maven { url 'https://repo.spring.io/libs-snapshot' }的路径。
 
@@ -28,7 +30,6 @@ categories:
        }
    }
    ```
-   <!-- more -->
 
 3. 在迁移过程中，加入以下依赖可以在启动过程中提示application.yml中被弃用的方法，注意在迁移结束后删除该部分依赖。
 
@@ -50,7 +51,7 @@ categories:
 
 9. 新版actuator在配置页面路径时，相应的配置路径进行了修改，需要注意更新，比如:
 
-   
+
 
    ```yaml
    old:

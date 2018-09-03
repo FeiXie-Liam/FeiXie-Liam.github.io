@@ -15,6 +15,8 @@ categories:
 
 在build.gradle中添加如下依赖
 
+<!--more-->
+
 ```}
 ext {
     springCloudVersion = 'Finchley.SR1'
@@ -31,8 +33,6 @@ dependencyManagement {
     }
 }
 ```
-
-<!--more-->
 
 Ribbon依赖用于自动负载均衡，如果没有使用Euraka服务注册与发现，则需要自己在application.yml文件中进行相应的配置，否则程序运行过程中无法找到Client对应的服务。
 

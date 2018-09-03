@@ -1,75 +1,70 @@
----
-title: JsonPath
-date: 2018-08-29 22:24:11
-tags: 
- - json
-categories:
- - 后端
-
----
-
 ## 导入依赖
-
----
 
 在build.gradle中添加依赖`compile('com.jayway.jsonpath:json-path:2.1.0')`。
 
 ## 语法
 
----
-
 讲解示例：
 
 ```json
 {
-    "tools": {
-        "jsonpath": {
-            "creator": {
-                "name": "Jayway Inc.",
-                "location": [
-                    "Malmo",
-                    "San Francisco",
-                    "Helsingborg"
-                ]
+    "store": {
+        "book": [
+            {
+                "category": "reference",
+                "author": "Nigel Rees",
+                "title": "Sayings of the Century",
+                "price": 8.95
+            },
+            {
+                "category": "fiction",
+                "author": "Evelyn Waugh",
+                "title": "Sword of Honour",
+                "price": 12.99
+            },
+            {
+                "category": "fiction",
+                "author": "Herman Melville",
+                "title": "Moby Dick",
+                "isbn": "0-553-21311-3",
+                "price": 8.99
+            },
+            {
+                "category": "fiction",
+                "author": "J. R. R. Tolkien",
+                "title": "The Lord of the Rings",
+                "isbn": "0-395-19395-8",
+                "price": 22.99
             }
+        ],
+        "bicycle": {
+            "color": "red",
+            "price": 19.95
         }
-    }
-    "book": [{
-    	    "title": "Beginning JSON",
-            "price": 49.99
-        },
-        {
-            "title": "JSON at Work",
-            "price": 29.99
-    }]
+    },
+    "expensive": 10
 }
 ```
 
-<!--more-->
-
 ### 表示方法
-
----
 
 jsonpath有两种方式表示路径：
 
 dot notation:
 
 ```java
-$.tool.jsonpath.creator.location[2]
+$.store.book[2]
 ```
 
 backet  notation
 
 ```java
-$['tool']['jsonpath']['creator']['location'][2]
+$['store']['book'][2]
 ```
 
 两种方式指向同样一个json子串。
 
 ### 运算符
-
----
 
 在jsonpath中有多个有效的运算符（Operator）
 
@@ -86,8 +81,6 @@ $['tool']['jsonpath']['creator']['location'][2]
 | `[?(<expression>)]`       | Filter expression. Expression must evaluate to a boolean value. |
 
 ### 方法和过滤器
-
----
 
 jsonpath支持多个方法：
 
@@ -139,8 +132,6 @@ jsonpath支持多个方法：
 | [$..book.length()](http://jsonpath.herokuapp.com/?path=$..book.length()) | The number of books                                          |
 
 ## 操作方式
-
----
 
 读取一个json字符串的最简单方式如下:
 
