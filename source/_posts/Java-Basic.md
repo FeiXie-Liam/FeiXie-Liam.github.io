@@ -14,6 +14,8 @@ categories:
 
 基本示例:
 
+<!--more-->
+
 ```java
 public enum Options {
     LIST_ALL_BOOKS,
