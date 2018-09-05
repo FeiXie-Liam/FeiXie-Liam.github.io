@@ -206,13 +206,13 @@ publishing {
 
 ---
 
-完成代码编写后，通过运行./gradlew build即可自动进行契约测试，contract插件将自动在build/generated-test-sources目录下生成对应的测试文件，进行测试。
+完成代码编写后，通过运行./gradlew clean build即可自动进行契约测试，contract插件将自动在build/generated-test-sources目录下生成对应的测试文件，进行测试。
 
 ### 发布
 
 ---
 
-运行./gradlew publishing将build生成的stubs自动发布到nexus上，供consumer端进行调用。
+运行./gradlew publish将build生成的stubs自动发布到nexus上，供consumer端进行调用。
 
 完整示例代码地址：https://github.com/FeiXie-Liam/contract-start-provider
 
