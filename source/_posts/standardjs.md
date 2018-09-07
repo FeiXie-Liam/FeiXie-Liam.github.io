@@ -33,7 +33,6 @@ StandardJS提供了一套简洁的规则对代码格式进行检查,需要注意
 ```json
   "scripts": {
     "standardCheck": "standard src/**/*.js",
-    "prettierFix": "prettier-standard src/**/*.js",
     "standardFix": "standard --fix"
   }
 ```
@@ -41,8 +40,6 @@ StandardJS提供了一套简洁的规则对代码格式进行检查,需要注意
 然后通过`npm run standardCheck`运行代码检查, 查看检查结果. 
 
 StandardJS提供了自动代码检查工具根据上述配置,可以通过`npm run standardFix`自动代码格式化,但是该方式的自动代码格式化只能解决部分问题,还有许多格式问题需要手动修改.
-
- standardJS支持prettier自动格式化工具, 通过`npm install prettier-standard --save-dev`然后如上配置scripts,使用`npm run prettierFix`可以进一步覆盖standardFix无法覆盖的部分格式问题.
 
 ## 容易遇到的坑
 
