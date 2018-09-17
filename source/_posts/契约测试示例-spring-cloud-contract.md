@@ -240,7 +240,7 @@ stubrunner:
   repositoryRoot: http://localhost:8081/nexus/content/repositories/snapshots/
 ```
 
-需要注意的是在一台电脑上运行provider和consumer服务时，当provider端已经通过某个端口(eg.8090)运行起来时，如果consumer端想要进行契约测试，stubrunner的ids端口不能与provider端的端口相同，否则测试程序会报错，需要将其指定为未被占用的端口。
+需要注意的是在一台电脑上运行provider和consumer服务时，当provider端已经通过某个端口(eg.8090)运行起来时，如果consumer端想要进行契约测试，stubrunner的ids端口不能与provider端的端口相同，否则测试程序会报错`Address already in use`，需要将其指定为未被占用的端口。
 
 ### 编写测试文件
 
