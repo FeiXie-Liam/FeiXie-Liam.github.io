@@ -13,7 +13,9 @@ categories:
 
 ---
 
-最基本的Table组件只需要传入columns和datasource属性即可创建, 以下是最简单的一个table示例:
+最基本的[Table](https://ant.design/components/table-cn/#header)组件只需要传入columns和datasource属性即可创建, 以下是最简单的一个table示例:
+
+<!--more-->
 
 ```javascript
 import { Table, Divider, Tag } from 'antd';
