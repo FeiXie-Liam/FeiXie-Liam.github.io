@@ -1,5 +1,5 @@
 ---
-title: Togglz
+title: Togglz tutorials
 date: 2018-11-05 08:37:08
 tags:
  - togglz
@@ -24,6 +24,8 @@ categories:
 > compile 'org.togglz:togglz-spring-web:2.6.1.Final'
 > runtime 'org.togglz:togglz-jsp:2.6.1.Final'
 > compile 'org.togglz:togglz-console:2.6.1.Final'
+
+<!--more-->
 
 #### for spring boot development:
 
