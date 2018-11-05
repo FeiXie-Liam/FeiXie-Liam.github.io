@@ -20,6 +20,8 @@ categories:
   - use inherent if class is a special case of another class
 - use factory design pattern to create a Object(eg. square -> rectangle )
 
+<!--more-->
+
 ### TDD
 
 ---
