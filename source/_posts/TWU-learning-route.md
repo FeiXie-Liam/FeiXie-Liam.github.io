@@ -145,3 +145,97 @@ possible operators in if condition:
 #### scp
 
 copy files in multi servers through ssh
+
+### Spring MVC return type
+
+---
+
+#### void
+
+```java
+@RequestMapping("/order")  
+public void show1(Model model) {  
+    	...
+   }  
+```
+
+automatically go to the views/order.jsp to show the web view.
+
+#### String
+
+```java
+@RequestMapping("/order")  
+public String show1(Model model) {  
+    	...
+    	model.addAttribute("order", order);
+        return "success";
+   }
+```
+
+automatically go to the views/success.jsp to show the web view.
+
+#### ModelAndView
+
+```java
+@RequestMapping("/order")  
+public ModelAndView show1() {
+    	...
+        return new ModelAndView("/orderDetail");
+   }
+```
+
+automatically go to the views/orderDetail.jsp to show the web view.
+
+### Strategy Patten
+
+---
+
+```java
+Strategy.java
+public interface Strategy {
+   public int doOperation(int num1, int num2);
+}
+
+OperationAdd.java
+public class OperationAdd implements Strategy{
+   @Override
+   public int doOperation(int num1, int num2) {
+      return num1 + num2;
+   }
+}
+
+OerationSubstract.java
+public class OperationSubstract implements Strategy{
+   @Override
+   public int doOperation(int num1, int num2) {
+      return num1 - num2;
+   }
+}
+```
+
+```java
+public class Context {
+   private Strategy strategy;
+ 
+   public Context(Strategy strategy){
+      this.strategy = strategy;
+   }
+ 
+   public int executeStrategy(int num1, int num2){
+      return strategy.doOperation(num1, num2);
+   }
+}
+```
+
+```java
+public class StrategyPatternDemo {
+   public static void main(String[] args) {
+      Context context = new Context(new OperationAdd());    
+      System.out.println("10 + 5 = " + context.executeStrategy(10, 5));//15
+ 
+      context = new Context(new OperationSubstract());      
+      System.out.println("10 - 5 = " + context.executeStrategy(10, 5));//5
+   }
+}
+```
+
