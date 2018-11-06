@@ -149,7 +149,7 @@ if( MyFeatures.FEATURE_ONE.isActive() ) {
 
 #### JSP
 
-```jsp
+```html
 <%@ taglib uri="http://togglz.org/taglib" prefix="togglz" %>
 
 
