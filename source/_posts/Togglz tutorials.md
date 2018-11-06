@@ -20,6 +20,8 @@ categories:
 
 #### for spring MVC development:
 
+build.gradle
+
 > compile 'org.togglz:togglz-servlet:2.6.1.Final'
 > compile 'org.togglz:togglz-spring-web:2.6.1.Final'
 > runtime 'org.togglz:togglz-jsp:2.6.1.Final'
@@ -28,6 +30,8 @@ categories:
 <!--more-->
 
 #### for spring boot development:
+
+build.gradle
 
 ##### 2.x:
 
@@ -113,7 +117,9 @@ FEATURE_TWO=false
 FEATURE_ONE=false
 ```
 
-**Important Note**: *if you use spring security, it will use **csrf** protection which cause that you can not use togglz admin console to edit the status of feature, one way to solve that problem is to **disable the csrf**.*
+**Important Note**: *if you use spring security, it will use **csrf** protection which cause that you can not use togglz admin console to edit the status of feature.*
+
+**one way** to solve that problem is to **disable the csrf**.(not recommend)
 
 security-app-context.xml:
 
@@ -122,6 +128,12 @@ security-app-context.xml:
     <csrf disabled="true"/>
 </http>
 ```
+
+**another way** is to import one more dependence in build.gradle
+
+>compile 'org.togglz:togglz-spring-security:2.6.1.Final'
+
+once you import this dependence, when you edit the toggle state in admin console, It will add a csrf token, and it will work!
 
 ### Usage
 
@@ -148,3 +160,67 @@ This is the text of the TEXT feature.
 </togglz:feature>
 ```
 
+### Test with togglz
+
+---
+
+if you use junit for test, you need to add test dependence for togglz in build.gradle
+
+> testCompile 'org.togglz:togglz-junit:2.6.1.Final'
+
+#### TogglzRule
+
+The first important feature of the JUnit integration module is the `TogglzRule`. This rule allows to modify the feature state at runtime. This is especially useful if you want to test a special combination of feature states.
+
+```java
+public class SomeJunitTest {
+
+  @Rule
+  public TogglzRule togglzRule = TogglzRule.allEnabled(MyFeatures.class);
+
+  @Test
+  public void testToggleFeature() {
+
+    // all features are active by default  
+    assertTrue(MyFeatures.FEATURE_ONE.isActive());
+
+    // you can easily modify the feature state using the TogglzRule
+    togglzRule.disable(MyFeatures.FEATURE_ONE);
+    assertFalse(MyFeatures.FEATURE_ONE.isActive());
+
+  }
+
+}
+```
+
+#### Feature variations
+
+The JUnit integration module also allows to run tests with different combination of feature states. This works very similar to JUnit's `@Parameterized` annotation.
+
+```java
+@RunWith(FeatureVariations.class)
+public class FeatureVariationsTest {
+
+    @Variations
+    public static VariationSet<MyFeatures> getPermutations() {
+      return VariationSetBuilder.create(MyFeatures.class)
+              .enable(MyFeatures.F1)
+              .vary(MyFeatures.F2)
+              .vary(MyFeatures.F3);
+    }
+
+    // will be executed 4 times
+    @Test
+    public void test() {
+      assertTrue(MyFeatures.F1.isActive());
+      assertTrue(MyFeatures.F2.isActive() || !MyFeatures.F2.isActive());
+      assertTrue(MyFeatures.F3.isActive() || !MyFeatures.F3.isActive());
+    }
+
+}
+```
+
+- F1=on, F2=off, F3=off
+- F1=on, F2=on, F3=off
+- F1=on, F2=off, F3=on
+- F1=on, F2=on, F3=on
