@@ -14,6 +14,8 @@ categories:
 
 Spring data support core Java 8 features – such as *Optional*, *Stream* API and *CompletableFuture*.
 
+<!--more-->
+
 ## Optional
 
 ---
