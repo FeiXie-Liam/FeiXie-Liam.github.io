@@ -7,10 +7,7 @@ tags:
  - JPA
 categories:
  - spring
-
 ---
-
-[TOC]
 
 Spring data support core Java 8 features – such as *Optional*, *Stream* API and *CompletableFuture*.
 
