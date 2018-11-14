@@ -811,3 +811,6 @@ images: images
 
 # Theme version
 version: 5.1.4
+
+# Custom
+google_analytics: your-analytics-id

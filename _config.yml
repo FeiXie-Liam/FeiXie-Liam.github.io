@@ -86,3 +86,6 @@ deploy:
   type: git
   repo: git@github.com:FeiXie-Liam/feixie-liam.github.io.git
   branch: master
+
+#Custom
+swiftype_key: C9VFAU7F4qzzCKydSkc1
