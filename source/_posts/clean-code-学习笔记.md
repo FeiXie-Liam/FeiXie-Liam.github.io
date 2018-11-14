@@ -255,4 +255,163 @@ public class EmployeeFactoryImpl implements EmployeeFactory {
 
 - 信息过多
 
-- 联系不明显  
+- 联系不明显
+
+## 格式
+
+---
+
+### 垂直格式
+
+- 短文件通常比长文件易于理解
+- 概念间(封包声明, 导入声明, 每个函数)添加垂直方向的区隔
+- 相关联的代码应该相互靠近
+- 本地变量放置在函数的顶部
+- 实体变量应该在类的顶部声明
+- 调用函数放在临近被调用函数上方
+- 执行相似操作的一组函数应该放置在一起
+
+### 横向格式
+
+- 上限120字符(不超过屏幕宽度)
+- 不需要水平对齐
+
+### 遵从团队规则
+
+## 对象和数据结构
+
+---
+
+### 数据抽象
+
+使用数据抽象隐藏实现细节. 隐藏实现并非只是在变量之间放上一个函数层那么简单. 隐藏实现关乎抽象! 类并不简单的使用取值器和赋值器将其变量推向外面, 而是暴露抽象接口, 以便用户无需了解数据的实现就能够操作数据本体.
+
+具象点:
+
+```java
+public class Point {   
+    public double getX() ...;
+    public double getY() ...;
+    
+    public void setX() ...;
+    public void setY() ...;
+}
+```
+
+抽象点:
+
+```java
+public class Point {
+    double getX();
+    double getY();
+    void setCartesian(double x, double y);
+    double getR();
+    double getTheta();
+    void setPolar(double r, double theta);
+}
+```
+
+### 数据, 对象的反对称性
+
+- 对象吧数据隐藏于抽象之后, 暴露操作数据的函数
+- 数据结构暴露数据, 没有提供有意义的函数
+
+过程式形状代码:
+
+```java
+public class Square {
+    public Point topLeft;
+    public double side;
+}
+
+public class Rectangle {
+    public Point topLeft;
+    public double height;
+    public double width;
+}
+
+public class Circle [
+    public Point center;
+    public double redius;
+]
+
+public class Geometry {
+    public final double PI = 3.141592653589793;
+    
+    public double area(Object shape) throws NoSuchShapeException {
+        if (shape instanceof Square) {
+            Square s = (Square)shape;
+            return s.side * s.side;
+        }
+        else if (shape instanceof Rectangle) {
+            Rectangle r = (Rectangle)shape;
+            return r.height * r.width;
+        }
+        else if (shape instanceof Circle) {
+            Circle c = (Circle)shape;
+            return PI * c.radius * c.radius;
+        }
+        throw new NoSuchShapeException();
+    }
+}
+```
+
+多态式形状:
+
+```java
+public class Square implements Shape {
+    private Point topLeft;
+    private double side;
+    
+    public double area() {
+        return side * side;
+    }
+}
+
+public class Rectangle implements Shape {
+    private Point topLeft;
+    private double height;
+    private double width;
+    
+    public double area() {
+        return height * width;
+    }
+}
+
+public class Circle implements Shape {
+    private Point center;
+    private double redius;
+    private final double PI = 3.141592653589793;
+    
+    public double area() {
+        return PI * radius * radius;
+    }
+}
+```
+
+***过程式代码(使用数据结构的代码)便于在不改动既有数据结构的前提下添加新函数, 面对对象代码便于在不改动既有函数的前提下添加新类.***
+
+或
+
+***过程式代码难以添加新数据结构, 因为必须修改所有函数. 面向对象代码难以添加新函数, 因为必须修改所有类.***
+
+### 得墨忒尔律
+
+模块不应该了解它所操作对象的内部情况, 类C的方法f只应该调用以下对象的方法:
+
+- C
+- 由f创建的对象
+- 作为参数传递给f的对象
+- 由C的实体变量持有的对象
+
+违反德墨忒尔律的典型案例:
+
+> final String outputDir = ctxt.getOptions().getScratchDir().getAbsolutePath();
+
+### 数据传送对象
+
+最为精炼的数据结构, 是一个只有公共变量, 没有函数的类. 这种数据结构有时被称为数据传送对象, 或DTO(Data Transfer Objects). DTO是非常有用的结构, 尤其是在于数据库通信或解析套接字传递的消息场景中.
+
+另一种更常见的结构为bean结构, 该结构由赋值器和取值器操作的私有变量. 不过该结构相比于DTO并没有实质性的好处.
+
+Active Record 是一种特殊的DTO形式. 它拥有公共(或可豆式访问的)变量的数据结构, 但通常也会拥有类似save和find这样的可浏览方法.
