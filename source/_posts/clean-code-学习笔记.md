@@ -177,3 +177,82 @@ public class EmployeeFactoryImpl implements EmployeeFactory {
 - Try/catch代码块丑陋不堪, 最好把try和catch代码块的主体部分抽离出来, 另外形成函数
 
 ### 去除重复代码
+
+## 注释
+
+---
+
+注释是弥补我们在用代码表达意图时遭遇的失败, 代码时刻在变动, 而注释往往不会跟着代码变动, 因此容易造成注释越来越不准确.
+
+- 注释无法美化糟糕的代码
+- 用代码来阐述
+
+### 好注释
+
+- 法律信息
+
+  > Copyright (C) 2003, 2004, 2005 by Object Mentor, Inc. All rights reserved.
+
+- 提供信息的注释
+
+  > //format matched kk:mm:ss EEE, MMM dd, yyyy
+  >
+  > Pattern timeMatcher = Pattern.compile("\\\\d\*:\\\\d\*:\\\\d\*  \\\\w\*, \\\\w\* \\\\d\*, \\\\d\*")
+
+- 对意图的解释
+
+- 阐释
+
+- 警示
+
+- TODO注释
+
+- 公共API的Javadoc
+
+### 怀注释
+
+- 喃喃自语
+
+- 多余的注释
+
+- 误导性注释
+
+- 循规式注释
+
+- 日志式注释
+
+- 废话注释
+
+- 能用函数或变量时别用注释
+
+  > //does the module from the global list <mod> depend on the
+  >
+  > //subsystem we are part of?
+  >
+  > if (smodule.getDependSubsystems().contains(subSysMod.getSubsystem())
+  >
+  > \>\>\>
+  >
+  > <<<
+  >
+  > ArrayList moduleDependees = smodule.getDependSubsystems();
+  >
+  > String ourSubSystem = subSysMod.getSubSystem();
+  >
+  > if(moduleDependees.contains(ourSubSystem))
+
+- 位置标记
+
+- 括号后的注释
+
+- 归属与署名
+
+- 注释掉的代码
+
+- HTML注释
+
+- 非本地信息
+
+- 信息过多
+
+- 联系不明显  
