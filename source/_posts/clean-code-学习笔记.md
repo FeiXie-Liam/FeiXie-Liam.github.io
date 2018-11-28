@@ -515,4 +515,3 @@ public class Sensors {
 借助接口和抽象类来隔离实现细节修改带来的影响.
 
 依赖倒置原则(Dependency Inversion Principle, DIP), 类应当依赖于抽象而不是依赖于具体细节.
-
