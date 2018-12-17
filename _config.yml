@@ -8,7 +8,7 @@ subtitle:
 description:
 keywords:
 author: ThxNo
-language:
+language: zh-CN
 timezone:
 
 # URL
@@ -89,3 +89,10 @@ deploy:
 
 #Custom
 swiftype_key: C9VFAU7F4qzzCKydSkc1
+
+algolia:
+  applicationID: 'applicationID'
+  apiKey: 'apiKey'
+  adminApiKey: 'adminApiKey'
+  indexName: 'indexName'
+  chunkSize: 5000

@@ -9,8 +9,6 @@ categories:
 
 ---
 
-<!--more-->
-
 ## 初始化Angular项目
 
 ---
@@ -19,6 +17,8 @@ categories:
 
 - nodejs
 - npm
+
+<!--more-->
 
 ### 安装Angular CLI
 
@@ -120,4 +120,80 @@ Project目录下存放了其他的apps和libs
 | app/app.module.ts         | 定义名为AppModule的根模块，它告诉Angular如何组装应用程序。最初只声明AppComponent。当您向应用添加更多组件时，必须在此处声明它们。 |
 | assets/*                  | 包含要在构建应用程序时按原样复制的图像文件和其他资源文件。   |
 |                           |                                                              |
+
+## Angular API
+
+---
+
+### Input与Output
+
+Input将父作用域的值“输入”到子作用域中，然后子作用域进行相关处理。
+
+Output相当于指令的方法绑定，子作用域触发事件执行响应函数，而响应函数方法体则位于父作用域中，相当于将事件“输出到”父作用域中，在父作用域中处理。
+
+example:
+
+```typescript
+//app.component.html
+<app-child [values]="data" (childEvent) = "getChildEvent($event)">
+</app-child>
+ 
+//app.component.ts
+@Component({
+ selector: 'app-root',
+ templateUrl: './app.component.html',
+ styleUrls: ['./app.component.css']
+})
+export class AppComponent {
+ data = [1,2,3];
+ 
+ getChildEvent(index){
+  console.log(index);
+  this.data.splice(index,1);
+ }
+}
+```
+
+```typescript
+//app-child.component.html
+<p *ngFor="let item of values; let i = index" (click)="fireChildEvent(i)">
+ {{item}}
+</p>
+ 
+ 
+//app-child.component.ts
+@Component({
+ selector: 'app-child',
+ templateUrl: './child.component.html',
+ styleUrls: ['./child.component.css']
+})
+export class ChildComponent implements OnInit {
+ @Input() values;
+ @Output() childEvent = new EventEmitter<any>();
+ constructor() { }
+ 
+ ngOnInit() {
+ 
+ }
+ fireChildEvent(index){
+  this.childEvent.emit(index);
+ }
+}
+```
+
+### [NgModal]与[(NgModal)]
+
+[(NgModal)]是Angular的双向绑定语法, [NgModal]则是单向绑定,` [(ngModel)]="overRideRate"` 相当于是`[ngModel]="overRideRate"  (ngModelChange)="overRideRate = $event"`
+
+Note: 当使用[(NgModal)]绑定input时, 需要在对应的app.module.ts文件下添加FormsModule:
+
+```typescript
+import {FormsModule} from '@angular/forms';
+...
+	imports: [
+  		...
+  		FormsModule
+	],
+...
+```
 
