@@ -29,13 +29,13 @@ ReactiveX是Reactive Extensions的缩写，一般简写为Rx。Rx是一个编程
 
 创建一个在固定时间间隔内, 持续发射一个无穷的整数序列的Observable对象
 
-![Interval](./assets/interval.c.png)
+![Interval](http://images2.imagebam.com/21/79/a6/9c5d291095224594.png)
 
 ### FlatMap
 
 转换被Observable对象发射的对象为Observables对象, 然后展开Observables对象为单个的Observable对象.
 
-![Interval](http://images2.imagebam.com/21/79/a6/9c5d291095224594.png)
+![FlatMap](http://reactivex.io/documentation/operators/images/flatMap.c.png)
 
 ### subscribeOn与observeOn
 
