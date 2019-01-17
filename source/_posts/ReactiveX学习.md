@@ -23,7 +23,7 @@ ReactiveX是Reactive Extensions的缩写，一般简写为Rx。Rx是一个编程
 
 与From操作符类似, 但From操作符会将可迭代的数组中的元素取出来组合成数据流, 而Just则将数组对象整体发射到数据流.
 
-![Just](./assets/just.c-20181217200107564.png)
+![Just](http://images2.imagebam.com/ee/b4/dd/94a3f21095224544.png)
 
 ### Interval
 
@@ -35,7 +35,7 @@ ReactiveX是Reactive Extensions的缩写，一般简写为Rx。Rx是一个编程
 
 转换被Observable对象发射的对象为Observables对象, 然后展开Observables对象为单个的Observable对象.
 
-![Interval](./assets/interval.c-20181217193910869.png)
+![Interval](http://images2.imagebam.com/21/79/a6/9c5d291095224594.png)
 
 ### subscribeOn与observeOn
 

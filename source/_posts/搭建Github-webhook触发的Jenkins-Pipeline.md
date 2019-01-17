@@ -32,5 +32,5 @@ categories:
 
 完成之后便可以通过`docker ps`命令查看到创建的好的Jenkins容器.
 
-![image-20190104195657363](/Users/fei/Documents/myblog/gh-pages/source/_posts/assets/image-20190104195657363-6603017.png)
+![image](http://images2.imagebam.com/8b/25/6d/87dfea1095234874.png)
 
