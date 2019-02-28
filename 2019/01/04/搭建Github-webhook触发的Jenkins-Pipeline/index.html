@@ -1,0 +1,1245 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next pisces use-motion" lang="zh-CN">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="Jenkins,Pipeline," />
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="本文通过docker启动Jenkins流水线, 使用ngrok将Jenkins接口暴露给github, 然后配置项目的github webhook关联Jenkins流水线项目, 实现代码变更触发流水线运行.">
+<meta name="keywords" content="Jenkins,Pipeline">
+<meta property="og:type" content="article">
+<meta property="og:title" content="搭建Github webhook触发的Jenkins Pipeline">
+<meta property="og:url" content="http://yoursite.com/2019/01/04/搭建Github-webhook触发的Jenkins-Pipeline/index.html">
+<meta property="og:site_name" content="THXNO&#39;s BLOG">
+<meta property="og:description" content="本文通过docker启动Jenkins流水线, 使用ngrok将Jenkins接口暴露给github, 然后配置项目的github webhook关联Jenkins流水线项目, 实现代码变更触发流水线运行.">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:image" content="http://images2.imagebam.com/8b/25/6d/87dfea1095234874.png">
+<meta property="og:image" content="http://images2.imagebam.com/a9/33/0b/b73a9a1108011354.jpg">
+<meta property="og:image" content="http://images2.imagebam.com/bc/a3/a0/df06f01108014974.jpg">
+<meta property="og:image" content="http://images2.imagebam.com/91/70/1a/bdc1db1108034754.jpg">
+<meta property="og:image" content="http://images2.imagebam.com/02/0e/55/b7a8ad1108037054.jpg">
+<meta property="og:image" content="https://upload-images.jianshu.io/upload_images/2518611-6c844d8a6bb58800.png?imageMogr2/auto-orient/">
+<meta property="og:image" content="https://upload-images.jianshu.io/upload_images/436630-943711ff2a74919d.png?imageMogr2/auto-orient/">
+<meta property="og:image" content="http://images2.imagebam.com/70/2a/f5/e31f6c1110649784.jpg">
+<meta property="og:image" content="http://images2.imagebam.com/2c/d8/e8/8c8cdd1110652714.jpg">
+<meta property="og:image" content="https://upload-images.jianshu.io/upload_images/3087126-c3a4356bb2262e51.png">
+<meta property="og:image" content="https://upload-images.jianshu.io/upload_images/2518611-547c6e295e263296.png">
+<meta property="og:image" content="http://images2.imagebam.com/cc/38/02/eae83a1110670344.jpg">
+<meta property="og:image" content="https://upload-images.jianshu.io/upload_images/3087126-ff7a204110da8f26.png">
+<meta property="og:image" content="http://images2.imagebam.com/c1/96/07/22df9d1110680084.jpg">
+<meta property="og:updated_time" content="2019-02-28T07:46:50.167Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="搭建Github webhook触发的Jenkins Pipeline">
+<meta name="twitter:description" content="本文通过docker启动Jenkins流水线, 使用ngrok将Jenkins接口暴露给github, 然后配置项目的github webhook关联Jenkins流水线项目, 实现代码变更触发流水线运行.">
+<meta name="twitter:image" content="http://images2.imagebam.com/8b/25/6d/87dfea1095234874.png">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Pisces',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: 'Author'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2019/01/04/搭建Github-webhook触发的Jenkins-Pipeline/"/>
+
+
+
+
+
+  <title>搭建Github webhook触发的Jenkins Pipeline | THXNO's BLOG</title>
+  
+
+
+
+
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+            (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+          m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+  ga('create', 'your-analytics-id', 'auto');
+  ga('send', 'pageview');
+</script>
+
+
+
+
+
+<link rel="stylesheet" href="/css/prism.css" type="text/css"></head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-CN">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">THXNO's BLOG</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            Home
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            Tags
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            Categories
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            Archives
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br />
+            
+            Search
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  <div class="popup search-popup local-search-popup">
+  <div class="local-search-header clearfix">
+    <span class="search-icon">
+      <i class="fa fa-search"></i>
+    </span>
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+    <div class="local-search-input-wrapper">
+      <input autocomplete="off"
+             placeholder="Searching..." spellcheck="false"
+             type="text" id="local-search-input">
+    </div>
+  </div>
+  <div id="local-search-result"></div>
+</div>
+
+
+
+    </div>
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/01/04/搭建Github-webhook触发的Jenkins-Pipeline/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="ThxNo">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="http://images2.imagebam.com/ae/1d/82/61f4331096064134.jpeg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="THXNO's BLOG">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">搭建Github webhook触发的Jenkins Pipeline</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2019-01-04T19:24:15+00:00">
+                2019-01-04
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">In</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Jenkins/" itemprop="url" rel="index">
+                    <span itemprop="name">Jenkins</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2019/01/04/搭建Github-webhook触发的Jenkins-Pipeline/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count valine-comment-count" data-xid="/2019/01/04/搭建Github-webhook触发的Jenkins-Pipeline/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+
+          
+            <div class="post-wordcount">
+              
+                
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">Words count in article&#58;</span>
+                
+                <span title="Words count in article">
+                  790
+                </span>
+              
+
+              
+
+              
+            </div>
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>本文通过docker启动Jenkins流水线, 使用ngrok将Jenkins接口暴露给github, 然后配置项目的github webhook关联Jenkins流水线项目, 实现代码变更触发流水线运行.</p>
+<a id="more"></a>
+<h2 id="创建Jenkins容器"><a href="#创建Jenkins容器" class="headerlink" title="创建Jenkins容器"></a>创建Jenkins容器</h2><hr>
+<p>首先下载jenkins的docker镜像: <code>docker pull jenkins/jenkins</code></p>
+<p><strong>注意不要使用<code>docker pull jenkins</code>下载官方镜像, 因为官方镜像版本没有更新, 无法使用pipeline等主要Jenkins插件.</strong></p>
+<p>镜像下载完成后, 使用命令创建Jenkins容器:</p>
+<p><code>docker run -d --name myjenkins -p 9999:8080 -p 50000:50000 -v /var/jenkins_home jenkins</code></p>
+<p><code>-d</code>参数表示容器可在后台运行<br><code>--name</code>指定容器名称<br><code>-p [port]:[containerPort]</code>表示将容器内部的端口(containerPort)映射到外部端口(port)<br><code>jenkins/jenkins</code>表示docker image的名称</p>
+<p>完成之后便可以通过<code>docker ps</code>命令查看到创建的好的Jenkins容器.</p>
+<p><img src="http://images2.imagebam.com/8b/25/6d/87dfea1095234874.png" alt="image"></p>
+<h2 id="初始化Jenkins客户端"><a href="#初始化Jenkins客户端" class="headerlink" title="初始化Jenkins客户端"></a>初始化Jenkins客户端</h2><hr>
+<p>根据docker创建的Jenkins容器暴露出的端口<code>8081</code>,可以通过<code>http://localhost:8081</code>访问到Jenkins客户端, 客户端首次登陆需要解锁Jenkins.</p>
+<p><img src="http://images2.imagebam.com/a9/33/0b/b73a9a1108011354.jpg" alt="Jenkins_unlock"></p>
+<p>解锁步骤如下:</p>
+<ol>
+<li>执行<code>docker exec -it {jenkins_container_name} bash</code>进入容器</li>
+<li>然后执行<code>cat /var/jenkins_home/secrets/initialAdminPassword</code></li>
+<li>复制终端打印出的秘钥, 并粘贴到Jenkins客户端初始页面,点击继续</li>
+</ol>
+<p>然后进入下一页面:</p>
+<p><img src="http://images2.imagebam.com/bc/a3/a0/df06f01108014974.jpg" alt="jenkins_plugins"></p>
+<p>点击Install suggested plugins, 然后等待所有插件安装完成.插件完成后, 将转到创建管理员的页面:</p>
+<p><img src="http://images2.imagebam.com/91/70/1a/bdc1db1108034754.jpg" alt="create_admin"></p>
+<p>填写完相应信息之后, 点击继续, 然后进入配置示例页面,直接点击继续, 完成Jenkins初始化配置工作.</p>
+<p><img src="http://images2.imagebam.com/02/0e/55/b7a8ad1108037054.jpg" alt="jenkins_ready"></p>
+<h2 id="配置Github-webhook"><a href="#配置Github-webhook" class="headerlink" title="配置Github webhook"></a>配置Github webhook</h2><hr>
+<p>webhook可以在Github仓库有新的提交时,自动发送消息到Jenkins,触发Jenkins流水线自动运行.</p>
+<h3 id="生成github-token"><a href="#生成github-token" class="headerlink" title="生成github token"></a>生成github token</h3><p>进入github –&gt; setting –&gt; Developer settings –&gt; Personal Access Token –&gt; Generate new token</p>
+<p><img src="https://upload-images.jianshu.io/upload_images/2518611-6c844d8a6bb58800.png?imageMogr2/auto-orient/" alt="github token"></p>
+<p><img src="https://upload-images.jianshu.io/upload_images/436630-943711ff2a74919d.png?imageMogr2/auto-orient/" alt="token generate success"></p>
+<h3 id="Github-webhooks设置"><a href="#Github-webhooks设置" class="headerlink" title="Github webhooks设置"></a>Github webhooks设置</h3><p>由于是在本地使用docker启动的Jenkins容器,因此需要使用<a href="https://ngrok.com/download" target="_blank" rel="noopener">ngrok</a>将Jenkins地址暴露给外网. </p>
+<p>下载完ngrok后, 在ngrok的目录下执行<code>ngrok http 8081</code>, 其中<code>8081</code>指本地Jenkins服务端口. 然后可以看到以下界面</p>
+<p><img src="http://images2.imagebam.com/70/2a/f5/e31f6c1110649784.jpg" alt="ngrok"></p>
+<p>将ngrok暴露出的域名复制下来, 然后进入GitHub上指定的项目 –&gt; setting –&gt; WebHooks –&gt; add webhook</p>
+<p><img src="http://images2.imagebam.com/2c/d8/e8/8c8cdd1110652714.jpg" alt="webhook config"></p>
+<p>填写Payload URL为ngrok生成的域名加上/github-webhook/, 并将上一步生成的github token填写到secret中. 点击保存.</p>
+<h2 id="配置Jenkins-Github-Plugin"><a href="#配置Jenkins-Github-Plugin" class="headerlink" title="配置Jenkins Github Plugin"></a>配置Jenkins Github Plugin</h2><hr>
+<p>系统管理 –&gt; 系统设置 –&gt; GitHub –&gt; Add GitHub Sever</p>
+<p><img src="https://upload-images.jianshu.io/upload_images/3087126-c3a4356bb2262e51.png" alt="jenkins github config"></p>
+<p><code>API URL</code> 输入 <code>https://api.github.com</code>，Credentials点击Add添加，选择Secret Text，如下图</p>
+<p><img src="https://upload-images.jianshu.io/upload_images/2518611-547c6e295e263296.png" alt="add secret"></p>
+<p>设置完成后, 点击<code>TestConnection</code>, 提示<code>Credentials verified for user UUserName, rate limit: xxx</code>, 则表明有效</p>
+<h2 id="创建流水线"><a href="#创建流水线" class="headerlink" title="创建流水线"></a>创建流水线</h2><hr>
+<p>在Jenkins管理主页面点击新建任务选项, 选择新建pipeline</p>
+<p><img src="http://images2.imagebam.com/cc/38/02/eae83a1110670344.jpg" alt="create pipeline"></p>
+<p>选择触发器<code>GitHub hook trigger for GITScm polling</code>，这样每次push代码都会触发Jenkins自动构建.</p>
+<p><img src="https://upload-images.jianshu.io/upload_images/3087126-ff7a204110da8f26.png" alt="github repo config"></p>
+<p>选择<code>pipeline script from scm</code>, scm选择<code>git</code>然后在<code>Repository URL</code>中填入项目地址.</p>
+<p><img src="http://images2.imagebam.com/c1/96/07/22df9d1110680084.jpg" alt="repo address"></p>
+<p>最后点击保存.</p>
+<h2 id="添加Jenkinsfile"><a href="#添加Jenkinsfile" class="headerlink" title="添加Jenkinsfile"></a>添加Jenkinsfile</h2><hr>
+<p>最后需要在本地代码库添加Jenkinsfile指定流水线的运行步骤. 默认需要将Jenkinsfile放置在代码根目录下. 文件内容如下</p>
+<pre class=" language-groovy"><code class="language-groovy">pipeline <span class="token punctuation">{</span>
+    agent any
+    stages <span class="token punctuation">{</span>
+        <span class="token function">stage</span><span class="token punctuation">(</span><span class="token string">'Test'</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+            steps <span class="token punctuation">{</span>
+                sh <span class="token string">'./gradlew test'</span>
+            <span class="token punctuation">}</span>
+        <span class="token punctuation">}</span>
+        <span class="token function">stage</span><span class="token punctuation">(</span><span class="token string">'Build'</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+            steps <span class="token punctuation">{</span>
+                sh <span class="token string">'./gradlew clean build'</span>
+            <span class="token punctuation">}</span>
+        <span class="token punctuation">}</span>
+    <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+</code></pre>
+<p>然后将代码push到github, 便能够看到Jenkins自动运行流水线.</p>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/Jenkins/" rel="tag"># Jenkins</a>
+          
+            <a href="/tags/Pipeline/" rel="tag"># Pipeline</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2018/12/17/ReactiveX学习/" rel="next" title="ReactiveX学习">
+                <i class="fa fa-chevron-left"></i> ReactiveX学习
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2019/01/08/JavaScript中的正则表达式/" rel="prev" title="JavaScript中的正则表达式">
+                JavaScript中的正则表达式 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+    <div class="comments" id="comments">
+    </div>
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            Table of Contents
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            Overview
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image"
+                src="http://images2.imagebam.com/ae/1d/82/61f4331096064134.jpeg"
+                alt="ThxNo" />
+            
+              <p class="site-author-name" itemprop="name">ThxNo</p>
+              <p class="site-description motion-element" itemprop="description"></p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">25</span>
+                  <span class="site-state-item-name">posts</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">10</span>
+                  <span class="site-state-item-name">categories</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">40</span>
+                  <span class="site-state-item-name">tags</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#创建Jenkins容器"><span class="nav-number">1.</span> <span class="nav-text">创建Jenkins容器</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#初始化Jenkins客户端"><span class="nav-number">2.</span> <span class="nav-text">初始化Jenkins客户端</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#配置Github-webhook"><span class="nav-number">3.</span> <span class="nav-text">配置Github webhook</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#生成github-token"><span class="nav-number">3.1.</span> <span class="nav-text">生成github token</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Github-webhooks设置"><span class="nav-number">3.2.</span> <span class="nav-text">Github webhooks设置</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#配置Jenkins-Github-Plugin"><span class="nav-number">4.</span> <span class="nav-text">配置Jenkins Github Plugin</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#创建流水线"><span class="nav-number">5.</span> <span class="nav-text">创建流水线</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#添加Jenkinsfile"><span class="nav-number">6.</span> <span class="nav-text">添加Jenkinsfile</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2019</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">ThxNo</span>
+
+  
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-area-chart"></i>
+    </span>
+    
+      <span class="post-meta-item-text">Site words total count&#58;</span>
+    
+    <span title="Site words total count">21.3k</span>
+  
+</div>
+
+
+  <div class="powered-by">Powered by <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a></div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">Theme &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Pisces</a> v5.1.4</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.4"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+  <script src="//cdn1.lncld.net/static/js/3.0.4/av-min.js"></script>
+  <script src="//unpkg.com/valine/dist/Valine.min.js"></script>
+  
+  <script type="text/javascript">
+    var GUEST = ['nick','mail','link'];
+    var guest = 'nick,mail,link';
+    guest = guest.split(',').filter(item=>{
+      return GUEST.indexOf(item)>-1;
+    });
+    new Valine({
+        el: '#comments' ,
+        verify: false,
+        notify: false,
+        appId: 'aGNlTNHsADJeMelfOmYt4M4k-gzGzoHsz',
+        appKey: '5zjTJ5D5ineFHJ0TRNICjNVz',
+        placeholder: 'Comments',
+        avatar:'mm',
+        guest_info:guest,
+        pageSize:'10' || 10,
+    });
+  </script>
+
+
+
+  
+
+  <script type="text/javascript">
+    // Popup Window;
+    var isfetched = false;
+    var isXml = true;
+    // Search DB path;
+    var search_path = "search.xml";
+    if (search_path.length === 0) {
+      search_path = "search.xml";
+    } else if (/json$/i.test(search_path)) {
+      isXml = false;
+    }
+    var path = "/" + search_path;
+    // monitor main search box;
+
+    var onPopupClose = function (e) {
+      $('.popup').hide();
+      $('#local-search-input').val('');
+      $('.search-result-list').remove();
+      $('#no-result').remove();
+      $(".local-search-pop-overlay").remove();
+      $('body').css('overflow', '');
+    }
+
+    function proceedsearch() {
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay"></div>')
+        .css('overflow', 'hidden');
+      $('.search-popup-overlay').click(onPopupClose);
+      $('.popup').toggle();
+      var $localSearchInput = $('#local-search-input');
+      $localSearchInput.attr("autocapitalize", "none");
+      $localSearchInput.attr("autocorrect", "off");
+      $localSearchInput.focus();
+    }
+
+    // search function;
+    var searchFunc = function(path, search_id, content_id) {
+      'use strict';
+
+      // start loading animation
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay">' +
+          '<div id="search-loading-icon">' +
+          '<i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>' +
+          '</div>' +
+          '</div>')
+        .css('overflow', 'hidden');
+      $("#search-loading-icon").css('margin', '20% auto 0 auto').css('text-align', 'center');
+
+      $.ajax({
+        url: path,
+        dataType: isXml ? "xml" : "json",
+        async: true,
+        success: function(res) {
+          // get the contents from search data
+          isfetched = true;
+          $('.popup').detach().appendTo('.header-inner');
+          var datas = isXml ? $("entry", res).map(function() {
+            return {
+              title: $("title", this).text(),
+              content: $("content",this).text(),
+              url: $("url" , this).text()
+            };
+          }).get() : res;
+          var input = document.getElementById(search_id);
+          var resultContent = document.getElementById(content_id);
+          var inputEventFunction = function() {
+            var searchText = input.value.trim().toLowerCase();
+            var keywords = searchText.split(/[\s\-]+/);
+            if (keywords.length > 1) {
+              keywords.push(searchText);
+            }
+            var resultItems = [];
+            if (searchText.length > 0) {
+              // perform local searching
+              datas.forEach(function(data) {
+                var isMatch = false;
+                var hitCount = 0;
+                var searchTextCount = 0;
+                var title = data.title.trim();
+                var titleInLowerCase = title.toLowerCase();
+                var content = data.content.trim().replace(/<[^>]+>/g,"");
+                var contentInLowerCase = content.toLowerCase();
+                var articleUrl = decodeURIComponent(data.url);
+                var indexOfTitle = [];
+                var indexOfContent = [];
+                // only match articles with not empty titles
+                if(title != '') {
+                  keywords.forEach(function(keyword) {
+                    function getIndexByWord(word, text, caseSensitive) {
+                      var wordLen = word.length;
+                      if (wordLen === 0) {
+                        return [];
+                      }
+                      var startPosition = 0, position = [], index = [];
+                      if (!caseSensitive) {
+                        text = text.toLowerCase();
+                        word = word.toLowerCase();
+                      }
+                      while ((position = text.indexOf(word, startPosition)) > -1) {
+                        index.push({position: position, word: word});
+                        startPosition = position + wordLen;
+                      }
+                      return index;
+                    }
+
+                    indexOfTitle = indexOfTitle.concat(getIndexByWord(keyword, titleInLowerCase, false));
+                    indexOfContent = indexOfContent.concat(getIndexByWord(keyword, contentInLowerCase, false));
+                  });
+                  if (indexOfTitle.length > 0 || indexOfContent.length > 0) {
+                    isMatch = true;
+                    hitCount = indexOfTitle.length + indexOfContent.length;
+                  }
+                }
+
+                // show search results
+
+                if (isMatch) {
+                  // sort index by position of keyword
+
+                  [indexOfTitle, indexOfContent].forEach(function (index) {
+                    index.sort(function (itemLeft, itemRight) {
+                      if (itemRight.position !== itemLeft.position) {
+                        return itemRight.position - itemLeft.position;
+                      } else {
+                        return itemLeft.word.length - itemRight.word.length;
+                      }
+                    });
+                  });
+
+                  // merge hits into slices
+
+                  function mergeIntoSlice(text, start, end, index) {
+                    var item = index[index.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    var hits = [];
+                    var searchTextCountInSlice = 0;
+                    while (position + word.length <= end && index.length != 0) {
+                      if (word === searchText) {
+                        searchTextCountInSlice++;
+                      }
+                      hits.push({position: position, length: word.length});
+                      var wordEnd = position + word.length;
+
+                      // move to next position of hit
+
+                      index.pop();
+                      while (index.length != 0) {
+                        item = index[index.length - 1];
+                        position = item.position;
+                        word = item.word;
+                        if (wordEnd > position) {
+                          index.pop();
+                        } else {
+                          break;
+                        }
+                      }
+                    }
+                    searchTextCount += searchTextCountInSlice;
+                    return {
+                      hits: hits,
+                      start: start,
+                      end: end,
+                      searchTextCount: searchTextCountInSlice
+                    };
+                  }
+
+                  var slicesOfTitle = [];
+                  if (indexOfTitle.length != 0) {
+                    slicesOfTitle.push(mergeIntoSlice(title, 0, title.length, indexOfTitle));
+                  }
+
+                  var slicesOfContent = [];
+                  while (indexOfContent.length != 0) {
+                    var item = indexOfContent[indexOfContent.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    // cut out 100 characters
+                    var start = position - 20;
+                    var end = position + 80;
+                    if(start < 0){
+                      start = 0;
+                    }
+                    if (end < position + word.length) {
+                      end = position + word.length;
+                    }
+                    if(end > content.length){
+                      end = content.length;
+                    }
+                    slicesOfContent.push(mergeIntoSlice(content, start, end, indexOfContent));
+                  }
+
+                  // sort slices in content by search text's count and hits' count
+
+                  slicesOfContent.sort(function (sliceLeft, sliceRight) {
+                    if (sliceLeft.searchTextCount !== sliceRight.searchTextCount) {
+                      return sliceRight.searchTextCount - sliceLeft.searchTextCount;
+                    } else if (sliceLeft.hits.length !== sliceRight.hits.length) {
+                      return sliceRight.hits.length - sliceLeft.hits.length;
+                    } else {
+                      return sliceLeft.start - sliceRight.start;
+                    }
+                  });
+
+                  // select top N slices in content
+
+                  var upperBound = parseInt('-1');
+                  if (upperBound >= 0) {
+                    slicesOfContent = slicesOfContent.slice(0, upperBound);
+                  }
+
+                  // highlight title and content
+
+                  function highlightKeyword(text, slice) {
+                    var result = '';
+                    var prevEnd = slice.start;
+                    slice.hits.forEach(function (hit) {
+                      result += text.substring(prevEnd, hit.position);
+                      var end = hit.position + hit.length;
+                      result += '<b class="search-keyword">' + text.substring(hit.position, end) + '</b>';
+                      prevEnd = end;
+                    });
+                    result += text.substring(prevEnd, slice.end);
+                    return result;
+                  }
+
+                  var resultItem = '';
+
+                  if (slicesOfTitle.length != 0) {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + highlightKeyword(title, slicesOfTitle[0]) + "</a>";
+                  } else {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + title + "</a>";
+                  }
+
+                  slicesOfContent.forEach(function (slice) {
+                    resultItem += "<a href='" + articleUrl + "'>" +
+                      "<p class=\"search-result\">" + highlightKeyword(content, slice) +
+                      "...</p>" + "</a>";
+                  });
+
+                  resultItem += "</li>";
+                  resultItems.push({
+                    item: resultItem,
+                    searchTextCount: searchTextCount,
+                    hitCount: hitCount,
+                    id: resultItems.length
+                  });
+                }
+              })
+            };
+            if (keywords.length === 1 && keywords[0] === "") {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-search fa-5x" /></div>'
+            } else if (resultItems.length === 0) {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-frown-o fa-5x" /></div>'
+            } else {
+              resultItems.sort(function (resultLeft, resultRight) {
+                if (resultLeft.searchTextCount !== resultRight.searchTextCount) {
+                  return resultRight.searchTextCount - resultLeft.searchTextCount;
+                } else if (resultLeft.hitCount !== resultRight.hitCount) {
+                  return resultRight.hitCount - resultLeft.hitCount;
+                } else {
+                  return resultRight.id - resultLeft.id;
+                }
+              });
+              var searchResultList = '<ul class=\"search-result-list\">';
+              resultItems.forEach(function (result) {
+                searchResultList += result.item;
+              })
+              searchResultList += "</ul>";
+              resultContent.innerHTML = searchResultList;
+            }
+          }
+
+          if ('auto' === 'auto') {
+            input.addEventListener('input', inputEventFunction);
+          } else {
+            $('.search-icon').click(inputEventFunction);
+            input.addEventListener('keypress', function (event) {
+              if (event.keyCode === 13) {
+                inputEventFunction();
+              }
+            });
+          }
+
+          // remove loading animation
+          $(".local-search-pop-overlay").remove();
+          $('body').css('overflow', '');
+
+          proceedsearch();
+        }
+      });
+    }
+
+    // handle and trigger popup window;
+    $('.popup-trigger').click(function(e) {
+      e.stopPropagation();
+      if (isfetched === false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+    });
+
+    $('.popup-btn-close').click(onPopupClose);
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+    $(document).on('keyup', function (event) {
+      var shouldDismissSearchPopup = event.which === 27 &&
+        $('.search-popup').is(':visible');
+      if (shouldDismissSearchPopup) {
+        onPopupClose();
+      }
+    });
+  </script>
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

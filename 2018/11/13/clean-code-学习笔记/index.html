@@ -1,0 +1,1557 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next pisces use-motion" lang="zh-CN">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="代码规范," />
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="有意义的命名 名副其实 使用能够表达本意的名称 发现更好的名称就替换旧名称">
+<meta name="keywords" content="代码规范">
+<meta property="og:type" content="article">
+<meta property="og:title" content="clean code 学习笔记">
+<meta property="og:url" content="http://yoursite.com/2018/11/13/clean-code-学习笔记/index.html">
+<meta property="og:site_name" content="THXNO&#39;s BLOG">
+<meta property="og:description" content="有意义的命名 名副其实 使用能够表达本意的名称 发现更好的名称就替换旧名称">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:updated_time" content="2019-02-28T07:46:50.163Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="clean code 学习笔记">
+<meta name="twitter:description" content="有意义的命名 名副其实 使用能够表达本意的名称 发现更好的名称就替换旧名称">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Pisces',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: 'Author'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2018/11/13/clean-code-学习笔记/"/>
+
+
+
+
+
+  <title>clean code 学习笔记 | THXNO's BLOG</title>
+  
+
+
+
+
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+            (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+          m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+  ga('create', 'your-analytics-id', 'auto');
+  ga('send', 'pageview');
+</script>
+
+
+
+
+
+<link rel="stylesheet" href="/css/prism.css" type="text/css"></head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-CN">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">THXNO's BLOG</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            Home
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            Tags
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            Categories
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            Archives
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br />
+            
+            Search
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  <div class="popup search-popup local-search-popup">
+  <div class="local-search-header clearfix">
+    <span class="search-icon">
+      <i class="fa fa-search"></i>
+    </span>
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+    <div class="local-search-input-wrapper">
+      <input autocomplete="off"
+             placeholder="Searching..." spellcheck="false"
+             type="text" id="local-search-input">
+    </div>
+  </div>
+  <div id="local-search-result"></div>
+</div>
+
+
+
+    </div>
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/11/13/clean-code-学习笔记/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="ThxNo">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="http://images2.imagebam.com/ae/1d/82/61f4331096064134.jpeg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="THXNO's BLOG">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">clean code 学习笔记</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2018-11-13T11:15:23+00:00">
+                2018-11-13
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">In</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/代码规范/" itemprop="url" rel="index">
+                    <span itemprop="name">代码规范</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2018/11/13/clean-code-学习笔记/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count valine-comment-count" data-xid="/2018/11/13/clean-code-学习笔记/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+
+          
+            <div class="post-wordcount">
+              
+                
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">Words count in article&#58;</span>
+                
+                <span title="Words count in article">
+                  2.9k
+                </span>
+              
+
+              
+
+              
+            </div>
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h2 id="有意义的命名"><a href="#有意义的命名" class="headerlink" title="有意义的命名"></a>有意义的命名</h2><hr>
+<h3 id="名副其实"><a href="#名副其实" class="headerlink" title="名副其实"></a>名副其实</h3><ul>
+<li>使用能够表达本意的名称</li>
+<li>发现更好的名称就替换旧名称</li>
+</ul>
+<a id="more"></a>
+<h3 id="避免误导"><a href="#避免误导" class="headerlink" title="避免误导"></a>避免误导</h3><ul>
+<li>避免使用其他领域的常用名称<ul>
+<li>hp, aix, sco为UNIX平台专有名词</li>
+<li>List对程序员有特殊含义</li>
+</ul>
+</li>
+<li>提防使用差异很小的名称</li>
+<li>避免使用消息字母l, 大写字母O作为变量名</li>
+</ul>
+<h3 id="做有意义的区分"><a href="#做有意义的区分" class="headerlink" title="做有意义的区分"></a>做有意义的区分</h3><ul>
+<li>避免混合使用Product, ProductInfo, ProductData这类名称不同,意义相同的类名</li>
+</ul>
+<h3 id="使用读得出来的名称"><a href="#使用读得出来的名称" class="headerlink" title="使用读得出来的名称"></a>使用读得出来的名称</h3><ul>
+<li>避免自造词</li>
+</ul>
+<h3 id="使用可搜索的名称"><a href="#使用可搜索的名称" class="headerlink" title="使用可搜索的名称"></a>使用可搜索的名称</h3><ul>
+<li>单字母名称和数字常量可能在代码中多处使用, 应赋予其便于搜索的名称</li>
+</ul>
+<h3 id="避免使用编码"><a href="#避免使用编码" class="headerlink" title="避免使用编码"></a>避免使用编码</h3><ul>
+<li>匈牙利语标法</li>
+<li>成员前缀</li>
+<li>接口和实现<ul>
+<li>宁愿实现编码也要避免接口编码</li>
+</ul>
+</li>
+</ul>
+<h3 id="类名"><a href="#类名" class="headerlink" title="类名"></a>类名</h3><ul>
+<li>类名和对象名应该是名字或名词短语</li>
+<li>类名不应该是动词</li>
+</ul>
+<h3 id="方法名"><a href="#方法名" class="headerlink" title="方法名"></a>方法名</h3><ul>
+<li>方法名应该是动词和动词短语</li>
+<li>属性访问器, 修改器和断言应该使用get, set, is并根据其值命名</li>
+</ul>
+<h3 id="别扮可爱"><a href="#别扮可爱" class="headerlink" title="别扮可爱"></a>别扮可爱</h3><ul>
+<li>避免使用俗话和俚语</li>
+</ul>
+<h3 id="每个概念对应一个词"><a href="#每个概念对应一个词" class="headerlink" title="每个概念对应一个词"></a>每个概念对应一个词</h3><ul>
+<li>同一概念同一使用一个词</li>
+<li>避免使用近义词表示同一概念</li>
+</ul>
+<h3 id="别用双关语"><a href="#别用双关语" class="headerlink" title="别用双关语"></a>别用双关语</h3><ul>
+<li>一个词不能对应多个不同概念</li>
+</ul>
+<h3 id="使用解决方案领域名称优先于所涉问题领域名称"><a href="#使用解决方案领域名称优先于所涉问题领域名称" class="headerlink" title="使用解决方案领域名称优先于所涉问题领域名称"></a>使用解决方案领域名称优先于所涉问题领域名称</h3><ul>
+<li>优先使用计算机科学术语</li>
+<li>无法使用程序员熟悉的术语, 再采用所涉问题领域的名称</li>
+</ul>
+<h3 id="添加有意义的语境"><a href="#添加有意义的语境" class="headerlink" title="添加有意义的语境"></a>添加有意义的语境</h3><ul>
+<li>使用命名良好的类, 函数或名称空间放置名称</li>
+</ul>
+<h2 id="函数"><a href="#函数" class="headerlink" title="函数"></a>函数</h2><hr>
+<h3 id="短小"><a href="#短小" class="headerlink" title="短小"></a>短小</h3><ul>
+<li>函数应该尽量短小(3-4行)</li>
+<li>缩进层级不应该多余一层或两层</li>
+</ul>
+<h3 id="只做一件事"><a href="#只做一件事" class="headerlink" title="只做一件事"></a>只做一件事</h3><ul>
+<li>一件事: 函数只做了函数名下同一抽象层上的步骤</li>
+<li>如果还能再拆出一个函数, 该函数不仅是单纯的重新诠释其实现, 则该函数不止做了一件事</li>
+<li>函数能被切分为多个<strong>区段</strong>, 便是函数做事太多的征兆</li>
+</ul>
+<h3 id="每个函数一个抽象层级"><a href="#每个函数一个抽象层级" class="headerlink" title="每个函数一个抽象层级"></a>每个函数一个抽象层级</h3><ul>
+<li>自顶向下读代码: 向下规则. 让每个函数后面都跟着位于下一抽象层级的函数, 这样一来, 在查看函数列表时, 就能循抽象层级向下阅读了.</li>
+</ul>
+<h3 id="switch语句"><a href="#switch语句" class="headerlink" title="switch语句"></a>switch语句</h3><ul>
+<li>使用多态实现,将switch埋藏在较低的抽象层级, 而且永远不重复.</li>
+</ul>
+<p>一般代码:</p>
+<pre class=" language-java"><code class="language-java"><span class="token keyword">public</span> Money <span class="token function">calculatePay</span><span class="token punctuation">(</span>Employee e<span class="token punctuation">)</span> <span class="token keyword">throws</span> InvalidEmployeeType <span class="token punctuation">{</span>
+    <span class="token keyword">switch</span><span class="token punctuation">(</span>e<span class="token punctuation">.</span>type<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        <span class="token keyword">case</span> COMMISSIONED<span class="token operator">:</span>
+            <span class="token keyword">return</span> <span class="token function">calculateCommissionedPay</span><span class="token punctuation">(</span>e<span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token keyword">case</span> HOURLY<span class="token operator">:</span>
+            <span class="token keyword">return</span> <span class="token function">calculateHourlyPay</span><span class="token punctuation">(</span>e<span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token keyword">case</span> SALARIED<span class="token operator">:</span>
+            <span class="token keyword">return</span> <span class="token function">calculateSalariedPay</span><span class="token punctuation">(</span>e<span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token keyword">default</span><span class="token operator">:</span>
+            <span class="token keyword">throw</span> <span class="token keyword">new</span> <span class="token class-name">InvalidEmployeeType</span><span class="token punctuation">(</span>e<span class="token punctuation">.</span>type<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+</code></pre>
+<p>使用抽象工厂隐藏switch语句:</p>
+<pre class=" language-java"><code class="language-java"><span class="token keyword">public</span> <span class="token keyword">abstract</span> <span class="token keyword">class</span> <span class="token class-name">Employee</span> <span class="token punctuation">{</span>
+    <span class="token keyword">public</span> <span class="token keyword">abstract</span> <span class="token keyword">boolean</span> <span class="token function">isPayday</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token keyword">public</span> <span class="token keyword">abstract</span> Money <span class="token function">calculatePay</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token keyword">public</span> <span class="token keyword">abstract</span> <span class="token keyword">void</span> <span class="token function">deliverPay</span><span class="token punctuation">(</span>Money pay<span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+
+<span class="token operator">--</span><span class="token operator">--</span><span class="token operator">--</span><span class="token operator">--</span><span class="token operator">--</span><span class="token operator">--</span><span class="token operator">--</span><span class="token operator">--</span><span class="token operator">--</span><span class="token operator">--</span><span class="token operator">--</span><span class="token operator">--</span><span class="token operator">--</span><span class="token operator">--</span><span class="token operator">--</span><span class="token operator">--</span><span class="token operator">--</span>
+
+<span class="token keyword">public</span> <span class="token keyword">interface</span> <span class="token class-name">EmployeeFactory</span> <span class="token punctuation">{</span>
+    <span class="token keyword">public</span> Empolyee <span class="token function">makeEmployee</span><span class="token punctuation">(</span>EmployeeRecord r<span class="token punctuation">)</span> <span class="token keyword">throws</span> InvalidEmmployeeType<span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+
+<span class="token operator">--</span><span class="token operator">--</span><span class="token operator">--</span><span class="token operator">--</span><span class="token operator">--</span><span class="token operator">--</span><span class="token operator">--</span><span class="token operator">--</span><span class="token operator">--</span><span class="token operator">--</span><span class="token operator">--</span><span class="token operator">--</span><span class="token operator">--</span><span class="token operator">--</span><span class="token operator">--</span><span class="token operator">--</span><span class="token operator">--</span>
+
+<span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">EmployeeFactoryImpl</span> <span class="token keyword">implements</span> <span class="token class-name">EmployeeFactory</span> <span class="token punctuation">{</span>
+    <span class="token keyword">public</span> Employee <span class="token function">makeEmployee</span><span class="token punctuation">(</span>EmployeeRecord r<span class="token punctuation">)</span> <span class="token keyword">throws</span> InvalidEmployeeType <span class="token punctuation">{</span>
+        <span class="token keyword">switch</span><span class="token punctuation">(</span>r<span class="token punctuation">.</span>type<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+            <span class="token keyword">case</span> COMMISSIONED<span class="token operator">:</span>
+                <span class="token keyword">return</span> <span class="token keyword">new</span> <span class="token class-name">CommissionedEmployee</span><span class="token punctuation">(</span>r<span class="token punctuation">)</span><span class="token punctuation">;</span>
+            <span class="token keyword">case</span> HOURLY<span class="token operator">:</span>
+                <span class="token keyword">return</span> <span class="token keyword">new</span> <span class="token class-name">HourlyEmployee</span><span class="token punctuation">(</span>r<span class="token punctuation">)</span><span class="token punctuation">;</span>
+            <span class="token keyword">case</span> SALARIED<span class="token operator">:</span>
+                <span class="token keyword">return</span> <span class="token keyword">new</span> <span class="token class-name">SalariedEmployee</span><span class="token punctuation">(</span>r<span class="token punctuation">)</span><span class="token punctuation">;</span>
+            <span class="token keyword">default</span><span class="token operator">:</span>
+                <span class="token keyword">throw</span> <span class="token keyword">new</span> <span class="token class-name">InvalidEmployeeType</span><span class="token punctuation">(</span>r<span class="token punctuation">.</span>type<span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token punctuation">}</span>
+    <span class="token punctuation">}</span>        
+<span class="token punctuation">}</span>
+</code></pre>
+<h3 id="使用描述性的名称"><a href="#使用描述性的名称" class="headerlink" title="使用描述性的名称"></a>使用描述性的名称</h3><ul>
+<li>长而具有描述性的名称, 比短而令人费解的名称好</li>
+<li>命名方式要保持一致</li>
+</ul>
+<h3 id="函数参数"><a href="#函数参数" class="headerlink" title="函数参数"></a>函数参数</h3><ul>
+<li>参数数量越少越好, 应该尽量避免三或三个以上参数</li>
+<li>参数不易对付, 带有太多概念性</li>
+<li>参数增加,测试难度也会增加</li>
+<li>尽量避免标识参数(boolean)</li>
+<li>如果函数看来需要多个参数(2个以上), 考虑将其中一些参数封装为类</li>
+</ul>
+<h3 id="无副作用"><a href="#无副作用" class="headerlink" title="无副作用"></a>无副作用</h3><ul>
+<li>函数对自己类中的变量作出未能预期的变动</li>
+<li>尽量避免使用输出参数. 修改所属对象的状态作为替代</li>
+</ul>
+<h3 id="分隔指令与询问"><a href="#分隔指令与询问" class="headerlink" title="分隔指令与询问"></a>分隔指令与询问</h3><ul>
+<li>函数要么做什么事, 要么回答什么事, 二者不可得兼</li>
+</ul>
+<h3 id="使用异常替代返回错误码"><a href="#使用异常替代返回错误码" class="headerlink" title="使用异常替代返回错误码"></a>使用异常替代返回错误码</h3><ul>
+<li>Try/catch代码块丑陋不堪, 最好把try和catch代码块的主体部分抽离出来, 另外形成函数</li>
+</ul>
+<h3 id="去除重复代码"><a href="#去除重复代码" class="headerlink" title="去除重复代码"></a>去除重复代码</h3><h2 id="注释"><a href="#注释" class="headerlink" title="注释"></a>注释</h2><hr>
+<p>注释是弥补我们在用代码表达意图时遭遇的失败, 代码时刻在变动, 而注释往往不会跟着代码变动, 因此容易造成注释越来越不准确.</p>
+<ul>
+<li>注释无法美化糟糕的代码</li>
+<li>用代码来阐述</li>
+</ul>
+<h3 id="好注释"><a href="#好注释" class="headerlink" title="好注释"></a>好注释</h3><ul>
+<li><p>法律信息</p>
+<blockquote>
+<p>Copyright (C) 2003, 2004, 2005 by Object Mentor, Inc. All rights reserved.</p>
+</blockquote>
+</li>
+<li><p>提供信息的注释</p>
+<blockquote>
+<p>//format matched kk:mm:ss EEE, MMM dd, yyyy</p>
+<p>Pattern timeMatcher = Pattern.compile(“\\d*:\\d*:\\d*  \\w*, \\w* \\d*, \\d*“)</p>
+</blockquote>
+</li>
+<li><p>对意图的解释</p>
+</li>
+<li><p>阐释</p>
+</li>
+<li><p>警示</p>
+</li>
+<li><p>TODO注释</p>
+</li>
+<li><p>公共API的Javadoc</p>
+</li>
+</ul>
+<h3 id="怀注释"><a href="#怀注释" class="headerlink" title="怀注释"></a>怀注释</h3><ul>
+<li><p>喃喃自语</p>
+</li>
+<li><p>多余的注释</p>
+</li>
+<li><p>误导性注释</p>
+</li>
+<li><p>循规式注释</p>
+</li>
+<li><p>日志式注释</p>
+</li>
+<li><p>废话注释</p>
+</li>
+<li><p>能用函数或变量时别用注释</p>
+<blockquote>
+<p>//does the module from the global list <mod> depend on the</mod></p>
+<p>//subsystem we are part of?</p>
+<p>if (smodule.getDependSubsystems().contains(subSysMod.getSubsystem())</p>
+<p>>>></p>
+<p>&lt;&lt;&lt;</p>
+<p>ArrayList moduleDependees = smodule.getDependSubsystems();</p>
+<p>String ourSubSystem = subSysMod.getSubSystem();</p>
+<p>if(moduleDependees.contains(ourSubSystem))</p>
+</blockquote>
+</li>
+<li><p>位置标记</p>
+</li>
+<li><p>括号后的注释</p>
+</li>
+<li><p>归属与署名</p>
+</li>
+<li><p>注释掉的代码</p>
+</li>
+<li><p>HTML注释</p>
+</li>
+<li><p>非本地信息</p>
+</li>
+<li><p>信息过多</p>
+</li>
+<li><p>联系不明显</p>
+</li>
+</ul>
+<h2 id="格式"><a href="#格式" class="headerlink" title="格式"></a>格式</h2><hr>
+<h3 id="垂直格式"><a href="#垂直格式" class="headerlink" title="垂直格式"></a>垂直格式</h3><ul>
+<li>短文件通常比长文件易于理解</li>
+<li>概念间(封包声明, 导入声明, 每个函数)添加垂直方向的区隔</li>
+<li>相关联的代码应该相互靠近</li>
+<li>本地变量放置在函数的顶部</li>
+<li>实体变量应该在类的顶部声明</li>
+<li>调用函数放在临近被调用函数上方</li>
+<li>执行相似操作的一组函数应该放置在一起</li>
+</ul>
+<h3 id="横向格式"><a href="#横向格式" class="headerlink" title="横向格式"></a>横向格式</h3><ul>
+<li>上限120字符(不超过屏幕宽度)</li>
+<li>不需要水平对齐</li>
+</ul>
+<h3 id="遵从团队规则"><a href="#遵从团队规则" class="headerlink" title="遵从团队规则"></a>遵从团队规则</h3><h2 id="对象和数据结构"><a href="#对象和数据结构" class="headerlink" title="对象和数据结构"></a>对象和数据结构</h2><hr>
+<h3 id="数据抽象"><a href="#数据抽象" class="headerlink" title="数据抽象"></a>数据抽象</h3><p>使用数据抽象隐藏实现细节. 隐藏实现并非只是在变量之间放上一个函数层那么简单. 隐藏实现关乎抽象! 类并不简单的使用取值器和赋值器将其变量推向外面, 而是暴露抽象接口, 以便用户无需了解数据的实现就能够操作数据本体.</p>
+<p>具象点:</p>
+<pre class=" language-java"><code class="language-java"><span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">Point</span> <span class="token punctuation">{</span>   
+    <span class="token keyword">public</span> <span class="token keyword">double</span> <span class="token function">getX</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">;</span>
+    <span class="token keyword">public</span> <span class="token keyword">double</span> <span class="token function">getY</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">;</span>
+
+    <span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">setX</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">;</span>
+    <span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">setY</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+</code></pre>
+<p>抽象点:</p>
+<pre class=" language-java"><code class="language-java"><span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">Point</span> <span class="token punctuation">{</span>
+    <span class="token keyword">double</span> <span class="token function">getX</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token keyword">double</span> <span class="token function">getY</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token keyword">void</span> <span class="token function">setCartesian</span><span class="token punctuation">(</span><span class="token keyword">double</span> x<span class="token punctuation">,</span> <span class="token keyword">double</span> y<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token keyword">double</span> <span class="token function">getR</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token keyword">double</span> <span class="token function">getTheta</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token keyword">void</span> <span class="token function">setPolar</span><span class="token punctuation">(</span><span class="token keyword">double</span> r<span class="token punctuation">,</span> <span class="token keyword">double</span> theta<span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+</code></pre>
+<h3 id="数据-对象的反对称性"><a href="#数据-对象的反对称性" class="headerlink" title="数据, 对象的反对称性"></a>数据, 对象的反对称性</h3><ul>
+<li>对象吧数据隐藏于抽象之后, 暴露操作数据的函数</li>
+<li>数据结构暴露数据, 没有提供有意义的函数</li>
+</ul>
+<p>过程式形状代码:</p>
+<pre class=" language-java"><code class="language-java"><span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">Square</span> <span class="token punctuation">{</span>
+    <span class="token keyword">public</span> Point topLeft<span class="token punctuation">;</span>
+    <span class="token keyword">public</span> <span class="token keyword">double</span> side<span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+
+<span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">Rectangle</span> <span class="token punctuation">{</span>
+    <span class="token keyword">public</span> Point topLeft<span class="token punctuation">;</span>
+    <span class="token keyword">public</span> <span class="token keyword">double</span> height<span class="token punctuation">;</span>
+    <span class="token keyword">public</span> <span class="token keyword">double</span> width<span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+
+<span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">Circle</span> <span class="token punctuation">[</span>
+    <span class="token keyword">public</span> Point center<span class="token punctuation">;</span>
+    <span class="token keyword">public</span> <span class="token keyword">double</span> redius<span class="token punctuation">;</span>
+<span class="token punctuation">]</span>
+
+<span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">Geometry</span> <span class="token punctuation">{</span>
+    <span class="token keyword">public</span> <span class="token keyword">final</span> <span class="token keyword">double</span> PI <span class="token operator">=</span> <span class="token number">3.141592653589793</span><span class="token punctuation">;</span>
+
+    <span class="token keyword">public</span> <span class="token keyword">double</span> <span class="token function">area</span><span class="token punctuation">(</span>Object shape<span class="token punctuation">)</span> <span class="token keyword">throws</span> NoSuchShapeException <span class="token punctuation">{</span>
+        <span class="token keyword">if</span> <span class="token punctuation">(</span>shape <span class="token keyword">instanceof</span> <span class="token class-name">Square</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+            Square s <span class="token operator">=</span> <span class="token punctuation">(</span>Square<span class="token punctuation">)</span>shape<span class="token punctuation">;</span>
+            <span class="token keyword">return</span> s<span class="token punctuation">.</span>side <span class="token operator">*</span> s<span class="token punctuation">.</span>side<span class="token punctuation">;</span>
+        <span class="token punctuation">}</span>
+        <span class="token keyword">else</span> <span class="token keyword">if</span> <span class="token punctuation">(</span>shape <span class="token keyword">instanceof</span> <span class="token class-name">Rectangle</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+            Rectangle r <span class="token operator">=</span> <span class="token punctuation">(</span>Rectangle<span class="token punctuation">)</span>shape<span class="token punctuation">;</span>
+            <span class="token keyword">return</span> r<span class="token punctuation">.</span>height <span class="token operator">*</span> r<span class="token punctuation">.</span>width<span class="token punctuation">;</span>
+        <span class="token punctuation">}</span>
+        <span class="token keyword">else</span> <span class="token keyword">if</span> <span class="token punctuation">(</span>shape <span class="token keyword">instanceof</span> <span class="token class-name">Circle</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+            Circle c <span class="token operator">=</span> <span class="token punctuation">(</span>Circle<span class="token punctuation">)</span>shape<span class="token punctuation">;</span>
+            <span class="token keyword">return</span> PI <span class="token operator">*</span> c<span class="token punctuation">.</span>radius <span class="token operator">*</span> c<span class="token punctuation">.</span>radius<span class="token punctuation">;</span>
+        <span class="token punctuation">}</span>
+        <span class="token keyword">throw</span> <span class="token keyword">new</span> <span class="token class-name">NoSuchShapeException</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+</code></pre>
+<p>多态式形状:</p>
+<pre class=" language-java"><code class="language-java"><span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">Square</span> <span class="token keyword">implements</span> <span class="token class-name">Shape</span> <span class="token punctuation">{</span>
+    <span class="token keyword">private</span> Point topLeft<span class="token punctuation">;</span>
+    <span class="token keyword">private</span> <span class="token keyword">double</span> side<span class="token punctuation">;</span>
+
+    <span class="token keyword">public</span> <span class="token keyword">double</span> <span class="token function">area</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        <span class="token keyword">return</span> side <span class="token operator">*</span> side<span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+
+<span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">Rectangle</span> <span class="token keyword">implements</span> <span class="token class-name">Shape</span> <span class="token punctuation">{</span>
+    <span class="token keyword">private</span> Point topLeft<span class="token punctuation">;</span>
+    <span class="token keyword">private</span> <span class="token keyword">double</span> height<span class="token punctuation">;</span>
+    <span class="token keyword">private</span> <span class="token keyword">double</span> width<span class="token punctuation">;</span>
+
+    <span class="token keyword">public</span> <span class="token keyword">double</span> <span class="token function">area</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        <span class="token keyword">return</span> height <span class="token operator">*</span> width<span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+
+<span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">Circle</span> <span class="token keyword">implements</span> <span class="token class-name">Shape</span> <span class="token punctuation">{</span>
+    <span class="token keyword">private</span> Point center<span class="token punctuation">;</span>
+    <span class="token keyword">private</span> <span class="token keyword">double</span> redius<span class="token punctuation">;</span>
+    <span class="token keyword">private</span> <span class="token keyword">final</span> <span class="token keyword">double</span> PI <span class="token operator">=</span> <span class="token number">3.141592653589793</span><span class="token punctuation">;</span>
+
+    <span class="token keyword">public</span> <span class="token keyword">double</span> <span class="token function">area</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        <span class="token keyword">return</span> PI <span class="token operator">*</span> radius <span class="token operator">*</span> radius<span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+</code></pre>
+<p><strong><em>过程式代码(使用数据结构的代码)便于在不改动既有数据结构的前提下添加新函数, 面对对象代码便于在不改动既有函数的前提下添加新类.</em></strong></p>
+<p>或</p>
+<p><strong><em>过程式代码难以添加新数据结构, 因为必须修改所有函数. 面向对象代码难以添加新函数, 因为必须修改所有类.</em></strong></p>
+<h3 id="得墨忒尔律"><a href="#得墨忒尔律" class="headerlink" title="得墨忒尔律"></a>得墨忒尔律</h3><p>模块不应该了解它所操作对象的内部情况, 类C的方法f只应该调用以下对象的方法:</p>
+<ul>
+<li>C</li>
+<li>由f创建的对象</li>
+<li>作为参数传递给f的对象</li>
+<li>由C的实体变量持有的对象</li>
+</ul>
+<p>违反德墨忒尔律的典型案例:</p>
+<blockquote>
+<p>final String outputDir = ctxt.getOptions().getScratchDir().getAbsolutePath();</p>
+</blockquote>
+<h3 id="数据传送对象"><a href="#数据传送对象" class="headerlink" title="数据传送对象"></a>数据传送对象</h3><p>最为精炼的数据结构, 是一个只有公共变量, 没有函数的类. 这种数据结构有时被称为数据传送对象, 或DTO(Data Transfer Objects). DTO是非常有用的结构, 尤其是在于数据库通信或解析套接字传递的消息场景中.</p>
+<p>另一种更常见的结构为bean结构, 该结构由赋值器和取值器操作的私有变量. 不过该结构相比于DTO并没有实质性的好处.</p>
+<p>Active Record 是一种特殊的DTO形式. 它拥有公共(或可豆式访问的)变量的数据结构, 但通常也会拥有类似save和find这样的可浏览方法.</p>
+<h2 id="错误处理"><a href="#错误处理" class="headerlink" title="错误处理"></a>错误处理</h2><hr>
+<p>错误处理很重要, <strong>但是如果错误处理搞乱了代码逻辑, 就是错误的做法</strong></p>
+<ul>
+<li>使用异常而非返回码</li>
+<li>先写try/catch/finally语句</li>
+<li>使用不可控异常</li>
+<li>对异常发生的环境进行说明</li>
+<li>依据调用者需要定义异常类</li>
+<li>定义常规流程</li>
+<li>别返回, 传递null值</li>
+</ul>
+<h2 id="边界"><a href="#边界" class="headerlink" title="边界"></a>边界</h2><hr>
+<h3 id="使用第三方代码"><a href="#使用第三方代码" class="headerlink" title="使用第三方代码"></a>使用第三方代码</h3><p>以java.util.Map为例, 应用程序需要一个包容Sensor对象的Map映射图, 大概是这样:</p>
+<pre class=" language-java"><code class="language-java">Map sensors <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">HashMap</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+Sensor s <span class="token operator">=</span> <span class="token punctuation">(</span>Sensor<span class="token punctuation">)</span>sensors<span class="token punctuation">.</span><span class="token function">get</span><span class="token punctuation">(</span>sensorId<span class="token punctuation">)</span><span class="token punctuation">;</span>
+</code></pre>
+<p>代码的调用端承担了Map中取得对象并将其转化为正确类型的职责, 且Map暴露的接口可能会超出应用程序的期望(不希望删除).</p>
+<p>更整洁的方式大致如下:</p>
+<pre class=" language-java"><code class="language-java"><span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">Sensors</span> <span class="token punctuation">{</span>
+    <span class="token keyword">private</span> Map sensors <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">HashMap</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+    <span class="token keyword">public</span> Sensor <span class="token function">getById</span><span class="token punctuation">(</span>String id<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        <span class="token keyword">return</span> <span class="token punctuation">(</span>Sensor<span class="token punctuation">)</span> sensors<span class="token punctuation">.</span><span class="token function">get</span><span class="token punctuation">(</span>id<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+</code></pre>
+<h3 id="浏览和学习第三方库"><a href="#浏览和学习第三方库" class="headerlink" title="浏览和学习第三方库"></a>浏览和学习第三方库</h3><p><strong>学习性测试</strong>: 不要在生产代码中实验新东西, 而是编写测试来理解第三方代码.</p>
+<ul>
+<li>学习性测试时一种精确实验, 班组我们增进对api的理解</li>
+<li>当第三方程序包发布新版本, 可以运行学习性测试, 查看程序包的行为有没有改变</li>
+<li>第三方程序包的修改和测试不兼容时, 能够马上发现</li>
+</ul>
+<h2 id="单元测试"><a href="#单元测试" class="headerlink" title="单元测试"></a>单元测试</h2><hr>
+<h3 id="TDD三定律"><a href="#TDD三定律" class="headerlink" title="TDD三定律"></a>TDD三定律</h3><ul>
+<li>在编写不能通过的单元测试前, 不能编写生产代码</li>
+<li>只可编写刚好无法通过的单元测试, 不能编译也算不通过</li>
+<li>只可编写刚好足以通过当前失败测试的生产代码</li>
+</ul>
+<h3 id="保持测试整洁"><a href="#保持测试整洁" class="headerlink" title="保持测试整洁"></a>保持测试整洁</h3><p><strong>测试代码与生产代码同样重要</strong></p>
+<ul>
+<li>单元测试让生产代码可扩展, 可维护, 可复用</li>
+<li>有了测试, 就不用担心对代码的修改</li>
+</ul>
+<p>测试整洁的要素在于<strong>可读性</strong>, 明确, 简洁, 还有足够的表达力. 整洁的测试中不应该包含太多细节, 应该呈现出构造-操作-检验(BUILD-OPERATE-CHECK)模式.</p>
+<p>整洁的代码还遵循以下5条规则(F.I.R.S.T):</p>
+<ul>
+<li>快速(Fast)</li>
+<li>独立(independent)</li>
+<li>可重复(Repeatable)</li>
+<li>自足验证(Self-Validating)</li>
+<li>及时(Timely)</li>
+</ul>
+<h2 id="类"><a href="#类" class="headerlink" title="类"></a>类</h2><hr>
+<h3 id="类应该短小"><a href="#类应该短小" class="headerlink" title="类应该短小"></a>类应该短小</h3><p>通过权责(responsibility)衡量类的大小</p>
+<ul>
+<li>单一权责原则</li>
+<li>内聚<ul>
+<li>类应该只有少量实体变量</li>
+<li>类中的每个方法都应该操作一个或多个这种变量</li>
+<li>通常方法操作的变量越多, 该类具有越大的内聚性</li>
+</ul>
+</li>
+</ul>
+<h3 id="组织类结构来避免修改"><a href="#组织类结构来避免修改" class="headerlink" title="组织类结构来避免修改"></a>组织类结构来避免修改</h3><p>希望将系统打造成在添加或修改特性时尽可能少惹麻烦的架子. 在理想系统中, 我们通过<strong>扩展系统</strong>而非修改现有代码来添加新特性.</p>
+<h3 id="隔离修改"><a href="#隔离修改" class="headerlink" title="隔离修改"></a>隔离修改</h3><p>借助接口和抽象类来隔离实现细节修改带来的影响.</p>
+<p>依赖倒置原则(Dependency Inversion Principle, DIP), 类应当依赖于抽象而不是依赖于具体细节.</p>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/代码规范/" rel="tag"># 代码规范</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2018/11/12/Spring-Data-Java-8-Support/" rel="next" title="Spring-Data-Java-8-Support">
+                <i class="fa fa-chevron-left"></i> Spring-Data-Java-8-Support
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2018/11/28/TypeScript入门/" rel="prev" title="TypeScript入门">
+                TypeScript入门 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+    <div class="comments" id="comments">
+    </div>
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            Table of Contents
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            Overview
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image"
+                src="http://images2.imagebam.com/ae/1d/82/61f4331096064134.jpeg"
+                alt="ThxNo" />
+            
+              <p class="site-author-name" itemprop="name">ThxNo</p>
+              <p class="site-description motion-element" itemprop="description"></p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">25</span>
+                  <span class="site-state-item-name">posts</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">10</span>
+                  <span class="site-state-item-name">categories</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">40</span>
+                  <span class="site-state-item-name">tags</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#有意义的命名"><span class="nav-number">1.</span> <span class="nav-text">有意义的命名</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#名副其实"><span class="nav-number">1.1.</span> <span class="nav-text">名副其实</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#避免误导"><span class="nav-number">1.2.</span> <span class="nav-text">避免误导</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#做有意义的区分"><span class="nav-number">1.3.</span> <span class="nav-text">做有意义的区分</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#使用读得出来的名称"><span class="nav-number">1.4.</span> <span class="nav-text">使用读得出来的名称</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#使用可搜索的名称"><span class="nav-number">1.5.</span> <span class="nav-text">使用可搜索的名称</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#避免使用编码"><span class="nav-number">1.6.</span> <span class="nav-text">避免使用编码</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#类名"><span class="nav-number">1.7.</span> <span class="nav-text">类名</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#方法名"><span class="nav-number">1.8.</span> <span class="nav-text">方法名</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#别扮可爱"><span class="nav-number">1.9.</span> <span class="nav-text">别扮可爱</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#每个概念对应一个词"><span class="nav-number">1.10.</span> <span class="nav-text">每个概念对应一个词</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#别用双关语"><span class="nav-number">1.11.</span> <span class="nav-text">别用双关语</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#使用解决方案领域名称优先于所涉问题领域名称"><span class="nav-number">1.12.</span> <span class="nav-text">使用解决方案领域名称优先于所涉问题领域名称</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#添加有意义的语境"><span class="nav-number">1.13.</span> <span class="nav-text">添加有意义的语境</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#函数"><span class="nav-number">2.</span> <span class="nav-text">函数</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#短小"><span class="nav-number">2.1.</span> <span class="nav-text">短小</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#只做一件事"><span class="nav-number">2.2.</span> <span class="nav-text">只做一件事</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#每个函数一个抽象层级"><span class="nav-number">2.3.</span> <span class="nav-text">每个函数一个抽象层级</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#switch语句"><span class="nav-number">2.4.</span> <span class="nav-text">switch语句</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#使用描述性的名称"><span class="nav-number">2.5.</span> <span class="nav-text">使用描述性的名称</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#函数参数"><span class="nav-number">2.6.</span> <span class="nav-text">函数参数</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#无副作用"><span class="nav-number">2.7.</span> <span class="nav-text">无副作用</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#分隔指令与询问"><span class="nav-number">2.8.</span> <span class="nav-text">分隔指令与询问</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#使用异常替代返回错误码"><span class="nav-number">2.9.</span> <span class="nav-text">使用异常替代返回错误码</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#去除重复代码"><span class="nav-number">2.10.</span> <span class="nav-text">去除重复代码</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#注释"><span class="nav-number">3.</span> <span class="nav-text">注释</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#好注释"><span class="nav-number">3.1.</span> <span class="nav-text">好注释</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#怀注释"><span class="nav-number">3.2.</span> <span class="nav-text">怀注释</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#格式"><span class="nav-number">4.</span> <span class="nav-text">格式</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#垂直格式"><span class="nav-number">4.1.</span> <span class="nav-text">垂直格式</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#横向格式"><span class="nav-number">4.2.</span> <span class="nav-text">横向格式</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#遵从团队规则"><span class="nav-number">4.3.</span> <span class="nav-text">遵从团队规则</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#对象和数据结构"><span class="nav-number">5.</span> <span class="nav-text">对象和数据结构</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#数据抽象"><span class="nav-number">5.1.</span> <span class="nav-text">数据抽象</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#数据-对象的反对称性"><span class="nav-number">5.2.</span> <span class="nav-text">数据, 对象的反对称性</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#得墨忒尔律"><span class="nav-number">5.3.</span> <span class="nav-text">得墨忒尔律</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#数据传送对象"><span class="nav-number">5.4.</span> <span class="nav-text">数据传送对象</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#错误处理"><span class="nav-number">6.</span> <span class="nav-text">错误处理</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#边界"><span class="nav-number">7.</span> <span class="nav-text">边界</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#使用第三方代码"><span class="nav-number">7.1.</span> <span class="nav-text">使用第三方代码</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#浏览和学习第三方库"><span class="nav-number">7.2.</span> <span class="nav-text">浏览和学习第三方库</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#单元测试"><span class="nav-number">8.</span> <span class="nav-text">单元测试</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#TDD三定律"><span class="nav-number">8.1.</span> <span class="nav-text">TDD三定律</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#保持测试整洁"><span class="nav-number">8.2.</span> <span class="nav-text">保持测试整洁</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#类"><span class="nav-number">9.</span> <span class="nav-text">类</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#类应该短小"><span class="nav-number">9.1.</span> <span class="nav-text">类应该短小</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#组织类结构来避免修改"><span class="nav-number">9.2.</span> <span class="nav-text">组织类结构来避免修改</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#隔离修改"><span class="nav-number">9.3.</span> <span class="nav-text">隔离修改</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2019</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">ThxNo</span>
+
+  
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-area-chart"></i>
+    </span>
+    
+      <span class="post-meta-item-text">Site words total count&#58;</span>
+    
+    <span title="Site words total count">21.3k</span>
+  
+</div>
+
+
+  <div class="powered-by">Powered by <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a></div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">Theme &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Pisces</a> v5.1.4</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.4"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+  <script src="//cdn1.lncld.net/static/js/3.0.4/av-min.js"></script>
+  <script src="//unpkg.com/valine/dist/Valine.min.js"></script>
+  
+  <script type="text/javascript">
+    var GUEST = ['nick','mail','link'];
+    var guest = 'nick,mail,link';
+    guest = guest.split(',').filter(item=>{
+      return GUEST.indexOf(item)>-1;
+    });
+    new Valine({
+        el: '#comments' ,
+        verify: false,
+        notify: false,
+        appId: 'aGNlTNHsADJeMelfOmYt4M4k-gzGzoHsz',
+        appKey: '5zjTJ5D5ineFHJ0TRNICjNVz',
+        placeholder: 'Comments',
+        avatar:'mm',
+        guest_info:guest,
+        pageSize:'10' || 10,
+    });
+  </script>
+
+
+
+  
+
+  <script type="text/javascript">
+    // Popup Window;
+    var isfetched = false;
+    var isXml = true;
+    // Search DB path;
+    var search_path = "search.xml";
+    if (search_path.length === 0) {
+      search_path = "search.xml";
+    } else if (/json$/i.test(search_path)) {
+      isXml = false;
+    }
+    var path = "/" + search_path;
+    // monitor main search box;
+
+    var onPopupClose = function (e) {
+      $('.popup').hide();
+      $('#local-search-input').val('');
+      $('.search-result-list').remove();
+      $('#no-result').remove();
+      $(".local-search-pop-overlay").remove();
+      $('body').css('overflow', '');
+    }
+
+    function proceedsearch() {
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay"></div>')
+        .css('overflow', 'hidden');
+      $('.search-popup-overlay').click(onPopupClose);
+      $('.popup').toggle();
+      var $localSearchInput = $('#local-search-input');
+      $localSearchInput.attr("autocapitalize", "none");
+      $localSearchInput.attr("autocorrect", "off");
+      $localSearchInput.focus();
+    }
+
+    // search function;
+    var searchFunc = function(path, search_id, content_id) {
+      'use strict';
+
+      // start loading animation
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay">' +
+          '<div id="search-loading-icon">' +
+          '<i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>' +
+          '</div>' +
+          '</div>')
+        .css('overflow', 'hidden');
+      $("#search-loading-icon").css('margin', '20% auto 0 auto').css('text-align', 'center');
+
+      $.ajax({
+        url: path,
+        dataType: isXml ? "xml" : "json",
+        async: true,
+        success: function(res) {
+          // get the contents from search data
+          isfetched = true;
+          $('.popup').detach().appendTo('.header-inner');
+          var datas = isXml ? $("entry", res).map(function() {
+            return {
+              title: $("title", this).text(),
+              content: $("content",this).text(),
+              url: $("url" , this).text()
+            };
+          }).get() : res;
+          var input = document.getElementById(search_id);
+          var resultContent = document.getElementById(content_id);
+          var inputEventFunction = function() {
+            var searchText = input.value.trim().toLowerCase();
+            var keywords = searchText.split(/[\s\-]+/);
+            if (keywords.length > 1) {
+              keywords.push(searchText);
+            }
+            var resultItems = [];
+            if (searchText.length > 0) {
+              // perform local searching
+              datas.forEach(function(data) {
+                var isMatch = false;
+                var hitCount = 0;
+                var searchTextCount = 0;
+                var title = data.title.trim();
+                var titleInLowerCase = title.toLowerCase();
+                var content = data.content.trim().replace(/<[^>]+>/g,"");
+                var contentInLowerCase = content.toLowerCase();
+                var articleUrl = decodeURIComponent(data.url);
+                var indexOfTitle = [];
+                var indexOfContent = [];
+                // only match articles with not empty titles
+                if(title != '') {
+                  keywords.forEach(function(keyword) {
+                    function getIndexByWord(word, text, caseSensitive) {
+                      var wordLen = word.length;
+                      if (wordLen === 0) {
+                        return [];
+                      }
+                      var startPosition = 0, position = [], index = [];
+                      if (!caseSensitive) {
+                        text = text.toLowerCase();
+                        word = word.toLowerCase();
+                      }
+                      while ((position = text.indexOf(word, startPosition)) > -1) {
+                        index.push({position: position, word: word});
+                        startPosition = position + wordLen;
+                      }
+                      return index;
+                    }
+
+                    indexOfTitle = indexOfTitle.concat(getIndexByWord(keyword, titleInLowerCase, false));
+                    indexOfContent = indexOfContent.concat(getIndexByWord(keyword, contentInLowerCase, false));
+                  });
+                  if (indexOfTitle.length > 0 || indexOfContent.length > 0) {
+                    isMatch = true;
+                    hitCount = indexOfTitle.length + indexOfContent.length;
+                  }
+                }
+
+                // show search results
+
+                if (isMatch) {
+                  // sort index by position of keyword
+
+                  [indexOfTitle, indexOfContent].forEach(function (index) {
+                    index.sort(function (itemLeft, itemRight) {
+                      if (itemRight.position !== itemLeft.position) {
+                        return itemRight.position - itemLeft.position;
+                      } else {
+                        return itemLeft.word.length - itemRight.word.length;
+                      }
+                    });
+                  });
+
+                  // merge hits into slices
+
+                  function mergeIntoSlice(text, start, end, index) {
+                    var item = index[index.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    var hits = [];
+                    var searchTextCountInSlice = 0;
+                    while (position + word.length <= end && index.length != 0) {
+                      if (word === searchText) {
+                        searchTextCountInSlice++;
+                      }
+                      hits.push({position: position, length: word.length});
+                      var wordEnd = position + word.length;
+
+                      // move to next position of hit
+
+                      index.pop();
+                      while (index.length != 0) {
+                        item = index[index.length - 1];
+                        position = item.position;
+                        word = item.word;
+                        if (wordEnd > position) {
+                          index.pop();
+                        } else {
+                          break;
+                        }
+                      }
+                    }
+                    searchTextCount += searchTextCountInSlice;
+                    return {
+                      hits: hits,
+                      start: start,
+                      end: end,
+                      searchTextCount: searchTextCountInSlice
+                    };
+                  }
+
+                  var slicesOfTitle = [];
+                  if (indexOfTitle.length != 0) {
+                    slicesOfTitle.push(mergeIntoSlice(title, 0, title.length, indexOfTitle));
+                  }
+
+                  var slicesOfContent = [];
+                  while (indexOfContent.length != 0) {
+                    var item = indexOfContent[indexOfContent.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    // cut out 100 characters
+                    var start = position - 20;
+                    var end = position + 80;
+                    if(start < 0){
+                      start = 0;
+                    }
+                    if (end < position + word.length) {
+                      end = position + word.length;
+                    }
+                    if(end > content.length){
+                      end = content.length;
+                    }
+                    slicesOfContent.push(mergeIntoSlice(content, start, end, indexOfContent));
+                  }
+
+                  // sort slices in content by search text's count and hits' count
+
+                  slicesOfContent.sort(function (sliceLeft, sliceRight) {
+                    if (sliceLeft.searchTextCount !== sliceRight.searchTextCount) {
+                      return sliceRight.searchTextCount - sliceLeft.searchTextCount;
+                    } else if (sliceLeft.hits.length !== sliceRight.hits.length) {
+                      return sliceRight.hits.length - sliceLeft.hits.length;
+                    } else {
+                      return sliceLeft.start - sliceRight.start;
+                    }
+                  });
+
+                  // select top N slices in content
+
+                  var upperBound = parseInt('-1');
+                  if (upperBound >= 0) {
+                    slicesOfContent = slicesOfContent.slice(0, upperBound);
+                  }
+
+                  // highlight title and content
+
+                  function highlightKeyword(text, slice) {
+                    var result = '';
+                    var prevEnd = slice.start;
+                    slice.hits.forEach(function (hit) {
+                      result += text.substring(prevEnd, hit.position);
+                      var end = hit.position + hit.length;
+                      result += '<b class="search-keyword">' + text.substring(hit.position, end) + '</b>';
+                      prevEnd = end;
+                    });
+                    result += text.substring(prevEnd, slice.end);
+                    return result;
+                  }
+
+                  var resultItem = '';
+
+                  if (slicesOfTitle.length != 0) {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + highlightKeyword(title, slicesOfTitle[0]) + "</a>";
+                  } else {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + title + "</a>";
+                  }
+
+                  slicesOfContent.forEach(function (slice) {
+                    resultItem += "<a href='" + articleUrl + "'>" +
+                      "<p class=\"search-result\">" + highlightKeyword(content, slice) +
+                      "...</p>" + "</a>";
+                  });
+
+                  resultItem += "</li>";
+                  resultItems.push({
+                    item: resultItem,
+                    searchTextCount: searchTextCount,
+                    hitCount: hitCount,
+                    id: resultItems.length
+                  });
+                }
+              })
+            };
+            if (keywords.length === 1 && keywords[0] === "") {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-search fa-5x" /></div>'
+            } else if (resultItems.length === 0) {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-frown-o fa-5x" /></div>'
+            } else {
+              resultItems.sort(function (resultLeft, resultRight) {
+                if (resultLeft.searchTextCount !== resultRight.searchTextCount) {
+                  return resultRight.searchTextCount - resultLeft.searchTextCount;
+                } else if (resultLeft.hitCount !== resultRight.hitCount) {
+                  return resultRight.hitCount - resultLeft.hitCount;
+                } else {
+                  return resultRight.id - resultLeft.id;
+                }
+              });
+              var searchResultList = '<ul class=\"search-result-list\">';
+              resultItems.forEach(function (result) {
+                searchResultList += result.item;
+              })
+              searchResultList += "</ul>";
+              resultContent.innerHTML = searchResultList;
+            }
+          }
+
+          if ('auto' === 'auto') {
+            input.addEventListener('input', inputEventFunction);
+          } else {
+            $('.search-icon').click(inputEventFunction);
+            input.addEventListener('keypress', function (event) {
+              if (event.keyCode === 13) {
+                inputEventFunction();
+              }
+            });
+          }
+
+          // remove loading animation
+          $(".local-search-pop-overlay").remove();
+          $('body').css('overflow', '');
+
+          proceedsearch();
+        }
+      });
+    }
+
+    // handle and trigger popup window;
+    $('.popup-trigger').click(function(e) {
+      e.stopPropagation();
+      if (isfetched === false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+    });
+
+    $('.popup-btn-close').click(onPopupClose);
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+    $(document).on('keyup', function (event) {
+      var shouldDismissSearchPopup = event.which === 27 &&
+        $('.search-popup').is(':visible');
+      if (shouldDismissSearchPopup) {
+        onPopupClose();
+      }
+    });
+  </script>
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

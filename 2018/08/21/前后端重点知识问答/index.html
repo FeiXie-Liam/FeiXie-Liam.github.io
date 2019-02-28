@@ -1,0 +1,1368 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next pisces use-motion" lang="zh-CN">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="Java,React,Spring," />
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="1. 在只使用React的前提下，从页面上触发修改到你看到页面变化，中间发生了什么？（描述中包含React的机制和如何用代码进行实现两方面）">
+<meta name="keywords" content="Java,React,Spring">
+<meta property="og:type" content="article">
+<meta property="og:title" content="前后端重点知识问答">
+<meta property="og:url" content="http://yoursite.com/2018/08/21/前后端重点知识问答/index.html">
+<meta property="og:site_name" content="THXNO&#39;s BLOG">
+<meta property="og:description" content="1. 在只使用React的前提下，从页面上触发修改到你看到页面变化，中间发生了什么？（描述中包含React的机制和如何用代码进行实现两方面）">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:image" content="https://raw.githubusercontent.com/urunium/Urunium.Redux/master/resources/redux.gif">
+<meta property="og:image" content="http://wiki.jikexueyuan.com/project/spring/images/mvc1.png">
+<meta property="og:updated_time" content="2019-02-28T07:46:50.167Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="前后端重点知识问答">
+<meta name="twitter:description" content="1. 在只使用React的前提下，从页面上触发修改到你看到页面变化，中间发生了什么？（描述中包含React的机制和如何用代码进行实现两方面）">
+<meta name="twitter:image" content="https://raw.githubusercontent.com/urunium/Urunium.Redux/master/resources/redux.gif">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Pisces',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: 'Author'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2018/08/21/前后端重点知识问答/"/>
+
+
+
+
+
+  <title>前后端重点知识问答 | THXNO's BLOG</title>
+  
+
+
+
+
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+            (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+          m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+  ga('create', 'your-analytics-id', 'auto');
+  ga('send', 'pageview');
+</script>
+
+
+
+
+
+<link rel="stylesheet" href="/css/prism.css" type="text/css"></head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-CN">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">THXNO's BLOG</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            Home
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            Tags
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            Categories
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            Archives
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br />
+            
+            Search
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  <div class="popup search-popup local-search-popup">
+  <div class="local-search-header clearfix">
+    <span class="search-icon">
+      <i class="fa fa-search"></i>
+    </span>
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+    <div class="local-search-input-wrapper">
+      <input autocomplete="off"
+             placeholder="Searching..." spellcheck="false"
+             type="text" id="local-search-input">
+    </div>
+  </div>
+  <div id="local-search-result"></div>
+</div>
+
+
+
+    </div>
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/08/21/前后端重点知识问答/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="ThxNo">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="http://images2.imagebam.com/ae/1d/82/61f4331096064134.jpeg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="THXNO's BLOG">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">前后端重点知识问答</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2018-08-21T20:23:54+00:00">
+                2018-08-21
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">In</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/培训/" itemprop="url" rel="index">
+                    <span itemprop="name">培训</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2018/08/21/前后端重点知识问答/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count valine-comment-count" data-xid="/2018/08/21/前后端重点知识问答/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+
+          
+            <div class="post-wordcount">
+              
+                
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">Words count in article&#58;</span>
+                
+                <span title="Words count in article">
+                  2.1k
+                </span>
+              
+
+              
+
+              
+            </div>
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h3 id="1-在只使用React的前提下，从页面上触发修改到你看到页面变化，中间发生了什么？（描述中包含React的机制和如何用代码进行实现两方面）"><a href="#1-在只使用React的前提下，从页面上触发修改到你看到页面变化，中间发生了什么？（描述中包含React的机制和如何用代码进行实现两方面）" class="headerlink" title="1. 在只使用React的前提下，从页面上触发修改到你看到页面变化，中间发生了什么？（描述中包含React的机制和如何用代码进行实现两方面）"></a>1. 在只使用React的前提下，从页面上触发修改到你看到页面变化，中间发生了什么？（描述中包含React的机制和如何用代码进行实现两方面）</h3><a id="more"></a>
+<p>在React中使用stateless or not 两种方式自定义组件:</p>
+<p>stateless:</p>
+<pre class=" language-javascript"><code class="language-javascript"><span class="token keyword">const</span> Content <span class="token operator">=</span> <span class="token punctuation">(</span>props<span class="token punctuation">)</span> <span class="token operator">=</span><span class="token operator">></span> <span class="token punctuation">{</span>
+    <span class="token keyword">return</span> <span class="token punctuation">(</span><span class="token operator">&lt;</span>div<span class="token operator">></span>
+            <span class="token operator">...</span>
+           <span class="token operator">&lt;</span><span class="token operator">/</span>div<span class="token operator">></span><span class="token punctuation">)</span>
+<span class="token punctuation">}</span>
+</code></pre>
+<p>not</p>
+<pre class=" language-javascript"><code class="language-javascript"><span class="token keyword">class</span> <span class="token class-name">Content</span> <span class="token keyword">extends</span> <span class="token class-name">Component</span> <span class="token punctuation">{</span>
+    <span class="token function">render</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        <span class="token keyword">return</span> <span class="token punctuation">(</span><span class="token operator">&lt;</span>div<span class="token operator">></span>
+               <span class="token operator">...</span>
+               <span class="token operator">&lt;</span><span class="token operator">/</span>div<span class="token operator">></span><span class="token punctuation">)</span>
+    <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+</code></pre>
+<p>非stateless得组件可以维护一组state，存放页面的数据，当需要修改state时，使用setState()方法同步将修改后的state渲染到页面上，如果需要将组件维护的state传递到下层组件中读取，则使用props传递。</p>
+<p>通过一个form表单为例，用户的信息由上层组件<content>维护，当用户填写新的用户信息并提交时，下层组件<form>通过props接受<content>的handler函数引用，然后读取表单信息的value，将相关value作为handler参数传回<content>触发state作出相应的更改，并重新渲染页面。</content></content></form></content></p>
+<h3 id="2-如何通过Spring-Data-JPA实现1-to-1，1-to-n，n-to-n的实体关系，并分别为三个关系列举一个场景。"><a href="#2-如何通过Spring-Data-JPA实现1-to-1，1-to-n，n-to-n的实体关系，并分别为三个关系列举一个场景。" class="headerlink" title="2. 如何通过Spring Data JPA实现1 to 1，1 to n，n to n的实体关系，并分别为三个关系列举一个场景。"></a>2. 如何通过Spring Data JPA实现1 to 1，1 to n，n to n的实体关系，并分别为三个关系列举一个场景。</h3><p>JPA中使用注解@OneToOne, @OneToMany, @ManyToOne, @ManyToMany表示实体关系，使用@JoinColum注解指定两个实体对象的外键关联。下面分别对三种情况举例：</p>
+<p>1 to 1：husband and wife</p>
+<pre class=" language-java"><code class="language-java">Husband<span class="token punctuation">.</span>java<span class="token operator">:</span>
+
+<span class="token annotation punctuation">@Entity</span>
+<span class="token annotation punctuation">@Table</span><span class="token punctuation">(</span>name<span class="token operator">=</span><span class="token string">"husband"</span><span class="token punctuation">)</span>
+<span class="token keyword">class</span> <span class="token class-name">Husband</span> <span class="token punctuation">{</span>
+    <span class="token keyword">private</span> Long id<span class="token punctuation">;</span>
+    <span class="token annotation punctuation">@OneToOne</span>
+    <span class="token annotation punctuation">@JoinColumn</span><span class="token punctuation">(</span>name<span class="token operator">=</span><span class="token string">"wife_id"</span><span class="token punctuation">)</span>
+    <span class="token keyword">private</span> Wife wife<span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+
+Wife<span class="token punctuation">.</span>java<span class="token operator">:</span>
+
+<span class="token annotation punctuation">@Entity</span>
+<span class="token annotation punctuation">@Table</span><span class="token punctuation">(</span>name<span class="token operator">=</span><span class="token string">"wife"</span><span class="token punctuation">)</span>
+<span class="token keyword">class</span> <span class="token class-name">Wife</span> <span class="token punctuation">{</span>
+    <span class="token keyword">private</span> Long id<span class="token punctuation">;</span>
+    <span class="token annotation punctuation">@OneToOne</span><span class="token punctuation">(</span>mappingBy<span class="token operator">=</span><span class="token string">"wife"</span><span class="token punctuation">)</span>
+    <span class="token keyword">private</span> Husband husband<span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+</code></pre>
+<p>1 to n: person and house</p>
+<pre class=" language-java"><code class="language-java">Person<span class="token punctuation">.</span>java<span class="token operator">:</span>
+
+<span class="token annotation punctuation">@Entity</span>
+<span class="token annotation punctuation">@Table</span><span class="token punctuation">(</span>name<span class="token operator">=</span><span class="token string">"person"</span><span class="token punctuation">)</span>
+<span class="token keyword">class</span> <span class="token class-name">Person</span> <span class="token punctuation">{</span>
+    <span class="token keyword">private</span> Long id<span class="token punctuation">;</span>
+    <span class="token annotation punctuation">@OneToMany</span><span class="token punctuation">(</span>mappingBy<span class="token operator">=</span><span class="token string">"person"</span><span class="token punctuation">)</span>
+    <span class="token keyword">private</span> List<span class="token operator">&lt;</span>House<span class="token operator">></span> houses<span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+
+House<span class="token punctuation">.</span>java<span class="token operator">:</span>
+
+<span class="token annotation punctuation">@Entity</span>
+<span class="token annotation punctuation">@Table</span><span class="token punctuation">(</span>name<span class="token operator">=</span><span class="token string">"house"</span><span class="token punctuation">)</span>
+<span class="token keyword">class</span> <span class="token class-name">House</span> <span class="token punctuation">{</span>
+    <span class="token keyword">private</span> Long id<span class="token punctuation">;</span>
+    <span class="token annotation punctuation">@OneToOne</span>
+    <span class="token annotation punctuation">@JoinColumn</span><span class="token punctuation">(</span>name<span class="token operator">=</span><span class="token string">"person_id"</span><span class="token punctuation">)</span>
+    <span class="token keyword">private</span> Person person<span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+</code></pre>
+<p>n to n: teacher and student(使用中间表)</p>
+<pre class=" language-java"><code class="language-java">Teacher<span class="token punctuation">.</span>java<span class="token operator">:</span>
+
+<span class="token annotation punctuation">@Entity</span>
+<span class="token annotation punctuation">@Table</span><span class="token punctuation">(</span>name<span class="token operator">=</span><span class="token string">"teacher"</span><span class="token punctuation">)</span>
+<span class="token keyword">class</span> <span class="token class-name">Teacher</span> <span class="token punctuation">{</span>
+    <span class="token keyword">private</span> Long id<span class="token punctuation">;</span>
+    <span class="token annotation punctuation">@ManyToMany</span><span class="token punctuation">(</span>mappingBy<span class="token operator">=</span><span class="token string">"teachers"</span><span class="token punctuation">)</span>
+    <span class="token keyword">private</span> List<span class="token operator">&lt;</span>Student<span class="token operator">></span> students<span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+
+Student<span class="token punctuation">.</span>java<span class="token operator">:</span>
+
+<span class="token annotation punctuation">@Entity</span>
+<span class="token annotation punctuation">@Table</span><span class="token punctuation">(</span>name<span class="token operator">=</span><span class="token string">"student"</span><span class="token punctuation">)</span>
+<span class="token keyword">class</span> <span class="token class-name">Student</span> <span class="token punctuation">{</span>
+    <span class="token keyword">private</span> Long id<span class="token punctuation">;</span>
+    <span class="token annotation punctuation">@ManyToMany</span>
+    <span class="token annotation punctuation">@JoinTable</span><span class="token punctuation">(</span>name<span class="token operator">=</span><span class="token string">"t_teacher_student"</span><span class="token punctuation">,</span>
+              joinColumns<span class="token operator">=</span><span class="token punctuation">{</span><span class="token annotation punctuation">@JoinColumn</span><span class="token punctuation">(</span>name<span class="token operator">=</span><span class="token string">"teacher_id"</span><span class="token punctuation">)</span><span class="token punctuation">}</span><span class="token punctuation">,</span>
+              inverseJoinColumns<span class="token operator">=</span><span class="token punctuation">{</span><span class="token annotation punctuation">@JoinColumn</span><span class="token punctuation">(</span>name<span class="token operator">=</span><span class="token string">"student_id"</span><span class="token punctuation">)</span><span class="token punctuation">}</span><span class="token punctuation">)</span>
+    <span class="token keyword">private</span> List<span class="token operator">&lt;</span>Teacher<span class="token operator">></span> teachers<span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+</code></pre>
+<h3 id="3-Tasking的作用是什么？划分时有哪些原则？"><a href="#3-Tasking的作用是什么？划分时有哪些原则？" class="headerlink" title="3. Tasking的作用是什么？划分时有哪些原则？"></a>3. Tasking的作用是什么？划分时有哪些原则？</h3><p>Tasking作用在于，当接触新的任务之后，对任务进行拆解，并可视化，以便于展示做Tasking的人能够暴露其对任务的思路，能够更加方便的进行交流。在进行Tasking时，需要注意Tasking需要包含方法，输入，输出以及描述，且所有的task输入输出需要找到对应的出处。</p>
+<h3 id="4-在使用Redux的前提下，从在页面上触发修改到看到页面变化，中间发生了什么？（描述包含Redux的机制和如何使用代码实现两方面）"><a href="#4-在使用Redux的前提下，从在页面上触发修改到看到页面变化，中间发生了什么？（描述包含Redux的机制和如何使用代码实现两方面）" class="headerlink" title="4. 在使用Redux的前提下，从在页面上触发修改到看到页面变化，中间发生了什么？（描述包含Redux的机制和如何使用代码实现两方面）"></a>4. 在使用Redux的前提下，从在页面上触发修改到看到页面变化，中间发生了什么？（描述包含Redux的机制和如何使用代码实现两方面）</h3><p>Redux机制：<img src="https://raw.githubusercontent.com/urunium/Urunium.Redux/master/resources/redux.gif" alt="redux flow"></p>
+<p>当页面某处事件触发时，该触发事件将调用一个handler函数，该函数定义在mapDispatchToProps中，通过connect方法将handler中的参数以及对应的action使用dispatch传递到对应的reducer，根据actionType，找到state的更新逻辑，将新的state返回，并储存在store中，然后重新渲染数据存在更新的页面。</p>
+<h3 id="5-当一个基于HTTP的API请求发送到WEB服务器，接着服务器返回信息，Spring-MVC做了哪些事情？（描述中包含Spring-MVC的机制和代码实现）"><a href="#5-当一个基于HTTP的API请求发送到WEB服务器，接着服务器返回信息，Spring-MVC做了哪些事情？（描述中包含Spring-MVC的机制和代码实现）" class="headerlink" title="5. 当一个基于HTTP的API请求发送到WEB服务器，接着服务器返回信息，Spring MVC做了哪些事情？（描述中包含Spring MVC的机制和代码实现）"></a>5. 当一个基于HTTP的API请求发送到WEB服务器，接着服务器返回信息，Spring MVC做了哪些事情？（描述中包含Spring MVC的机制和代码实现）</h3><p><img src="http://wiki.jikexueyuan.com/project/spring/images/mvc1.png" alt="Spring MVC framework"></p>
+<p>当接受到一个HTTP请求（GET/POST/PUT/DELETE）,Spring MVC首先进入DispatcherServlet进行请求分发，然后通过HandlerMapping将消息传递到Controller层，Controller层通过对应的URI与请求类型接受请求消息，然后转到Service层对输入消息进行相关业务处理，在Service进行相关业务处理时，需要定义实体对象Model，Model对应于数据库中对应的表，通过操作Repository与数据库进行数据交换，返回通过业务逻辑处理后的数据，即完成View Resolver之后，将处理后的数据交给View层进行页面数据更新以及渲染。</p>
+<h3 id="6-什么是TDD？TDD有何优点？TDD流程？"><a href="#6-什么是TDD？TDD有何优点？TDD流程？" class="headerlink" title="6. 什么是TDD？TDD有何优点？TDD流程？"></a>6. 什么是TDD？TDD有何优点？TDD流程？</h3><p>TDD，即测试驱动开发(Test Driven Development) ，是极限编程的一部分，通过先编写测试用例然后再根据测试用例进行最简单实现，小步实现代码，通过测试，然后根据需求继续添加测试，对原有代码进行重构从而最终完成项目开发。</p>
+<p>使用TDD的优点在于：使用TDD能够明确需求，完成测试编写后，强制要求开发者在不改变接口的前提下进行实现，这样便能够保证实现的代码能够符合验收标准。同时也能使帮助开发者聚焦于当前部分，避免注意力被其他需求分散。由于通过小步实现，实现后的代码都能够通过测试用例，因此在进行代码重构的时候出错的概率更小。</p>
+<p>TDD的具体流程：首先根据业务需求明确当前要完成的功能，然后针对该功能完成测试用例的编写，编写玩测试用例后，确认测试代码编译不通过，然后开始实现代码使测试代码通过，添加测试用例，运行测试用例编译不通过，对原有代码进行重构，一次迭代，最终完成功能开发。</p>
+<h3 id="7-js中this引用为什么会变成undefined，强制绑定this引用的方式有哪几种，分别写出实例代码。"><a href="#7-js中this引用为什么会变成undefined，强制绑定this引用的方式有哪几种，分别写出实例代码。" class="headerlink" title="7. js中this引用为什么会变成undefined，强制绑定this引用的方式有哪几种，分别写出实例代码。"></a>7. js中this引用为什么会变成undefined，强制绑定this引用的方式有哪几种，分别写出实例代码。</h3><h3 id="8-HTTP的状态码有哪几类？常见的有哪些？分别表示什么含义？"><a href="#8-HTTP的状态码有哪几类？常见的有哪些？分别表示什么含义？" class="headerlink" title="8. HTTP的状态码有哪几类？常见的有哪些？分别表示什么含义？"></a>8. HTTP的状态码有哪几类？常见的有哪些？分别表示什么含义？</h3><table>
+<thead>
+<tr>
+<th style="text-align:center">HTTP CODE</th>
+<th style="text-align:center">category</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">1xx</td>
+<td style="text-align:center">消息</td>
+</tr>
+<tr>
+<td style="text-align:center">2xx</td>
+<td style="text-align:center">成功</td>
+</tr>
+<tr>
+<td style="text-align:center">3xx</td>
+<td style="text-align:center">重定向</td>
+</tr>
+<tr>
+<td style="text-align:center">4xx</td>
+<td style="text-align:center">客户端错误</td>
+</tr>
+<tr>
+<td style="text-align:center">5xx</td>
+<td style="text-align:center">服务端错误</td>
+</tr>
+</tbody>
+</table>
+<p>常见的HTTP CODE有：</p>
+<table>
+<thead>
+<tr>
+<th style="text-align:center">HTTP CODE</th>
+<th style="text-align:center">MEANING</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">200</td>
+<td style="text-align:center">操作成功并包含返回的数据</td>
+</tr>
+<tr>
+<td style="text-align:center">201</td>
+<td style="text-align:center">操作成功并创建了新数据</td>
+</tr>
+<tr>
+<td style="text-align:center">204</td>
+<td style="text-align:center">操作成功，没有返回内容</td>
+</tr>
+<tr>
+<td style="text-align:center">400</td>
+<td style="text-align:center">明显的客户端错误</td>
+</tr>
+<tr>
+<td style="text-align:center">401</td>
+<td style="text-align:center">没有权限访问</td>
+</tr>
+<tr>
+<td style="text-align:center">403</td>
+<td style="text-align:center">页面被隐藏</td>
+</tr>
+<tr>
+<td style="text-align:center">404</td>
+<td style="text-align:center">页面不存在</td>
+</tr>
+<tr>
+<td style="text-align:center">500</td>
+<td style="text-align:center">服务端错误</td>
+</tr>
+</tbody>
+</table>
+<h3 id="9-常见的需要重构的坏味道有哪些？以及他们的影响？（至少写5个）"><a href="#9-常见的需要重构的坏味道有哪些？以及他们的影响？（至少写5个）" class="headerlink" title="9. 常见的需要重构的坏味道有哪些？以及他们的影响？（至少写5个）"></a>9. 常见的需要重构的坏味道有哪些？以及他们的影响？（至少写5个）</h3><h3 id="10-jQuery下取得一个id为”my-input”的input的值得代码怎么写？"><a href="#10-jQuery下取得一个id为”my-input”的input的值得代码怎么写？" class="headerlink" title="10. jQuery下取得一个id为”my_input”的input的值得代码怎么写？"></a>10. jQuery下取得一个id为”my_input”的input的值得代码怎么写？</h3><h3 id="11-为一个id为”my-form”下的type为submit的button绑定点击事件的代码怎么写？"><a href="#11-为一个id为”my-form”下的type为submit的button绑定点击事件的代码怎么写？" class="headerlink" title="11.为一个id为”my_form”下的type为submit的button绑定点击事件的代码怎么写？"></a>11.为一个id为”my_form”下的type为submit的button绑定点击事件的代码怎么写？</h3><h3 id="12-如何为RestController写API测试，写出伪代码例子，如何为Repository写单元测试，写出伪代码例子，什么是对象、类、实例？他们之间的关系是怎样的？"><a href="#12-如何为RestController写API测试，写出伪代码例子，如何为Repository写单元测试，写出伪代码例子，什么是对象、类、实例？他们之间的关系是怎样的？" class="headerlink" title="12. 如何为RestController写API测试，写出伪代码例子，如何为Repository写单元测试，写出伪代码例子，什么是对象、类、实例？他们之间的关系是怎样的？"></a>12. 如何为RestController写API测试，写出伪代码例子，如何为Repository写单元测试，写出伪代码例子，什么是对象、类、实例？他们之间的关系是怎样的？</h3><p>API测试:</p>
+<pre class=" language-java"><code class="language-java"><span class="token annotation punctuation">@Test</span>
+<span class="token annotation punctuation">@DataSet</span><span class="token punctuation">(</span><span class="token string">'someData.yml'</span><span class="token punctuation">)</span>
+<span class="token keyword">public</span> <span class="token keyword">void</span> should<span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span>given<span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    RestAssured
+        <span class="token punctuation">.</span><span class="token function">given</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+            <span class="token punctuation">.</span><span class="token function">someCondition</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+        <span class="token punctuation">.</span><span class="token function">when</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+            <span class="token punctuation">.</span><span class="token function">someRequest</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+        <span class="token punctuation">.</span><span class="token function">then</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+            <span class="token punctuation">.</span><span class="token function">someAssert</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+<span class="token punctuation">}</span>
+</code></pre>
+<p>单元测试：</p>
+<pre class=" language-java"><code class="language-java"><span class="token keyword">public</span> <span class="token keyword">void</span> should<span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span>given<span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    <span class="token comment" spellcheck="true">//given</span>
+    somePrepareData <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name"><span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span></span><span class="token punctuation">;</span>
+    <span class="token function">given</span><span class="token punctuation">(</span>someClass<span class="token punctuation">.</span><span class="token function">someMethod</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+        <span class="token punctuation">.</span><span class="token function">willReturn</span><span class="token punctuation">(</span>somePrepareData<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token comment" spellcheck="true">//when</span>
+    actual <span class="token operator">=</span> <span class="token function">testMethod</span><span class="token punctuation">(</span><span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token comment" spellcheck="true">//then</span>
+    <span class="token function">assertThat</span><span class="token punctuation">(</span>actual<span class="token punctuation">.</span><span class="token function">someProps</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">isEqualTo</span><span class="token punctuation">(</span><span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span>
+<span class="token punctuation">}</span>
+</code></pre>
+<p>类是对象的集合，类里面包含了N多对象，对象只是类的一个特例，对象具有状态和行为，实例是一个对象的具体个例。</p>
+<h3 id="13-使用React时，如何获得某个input的值？"><a href="#13-使用React时，如何获得某个input的值？" class="headerlink" title="13. 使用React时，如何获得某个input的值？"></a>13. 使用React时，如何获得某个input的值？</h3><h3 id="14-通过例子说明Restful-API"><a href="#14-通过例子说明Restful-API" class="headerlink" title="14.通过例子说明Restful API"></a>14.通过例子说明Restful API</h3><h3 id="15-解释下Callback是什么，举个例子"><a href="#15-解释下Callback是什么，举个例子" class="headerlink" title="15. 解释下Callback是什么，举个例子"></a>15. 解释下Callback是什么，举个例子</h3><h3 id="16-在使用React-Router，并给一个按钮绑定点击事件处理函数时，如何在事件处理函数中用js进行页面跳转"><a href="#16-在使用React-Router，并给一个按钮绑定点击事件处理函数时，如何在事件处理函数中用js进行页面跳转" class="headerlink" title="16.在使用React Router，并给一个按钮绑定点击事件处理函数时，如何在事件处理函数中用js进行页面跳转"></a>16.在使用React Router，并给一个按钮绑定点击事件处理函数时，如何在事件处理函数中用js进行页面跳转</h3><h3 id="17-为什么需要架构分层？并画图说明Core-Service-Shell的职责以及他们之间的关系？"><a href="#17-为什么需要架构分层？并画图说明Core-Service-Shell的职责以及他们之间的关系？" class="headerlink" title="17. 为什么需要架构分层？并画图说明Core/Service/Shell的职责以及他们之间的关系？"></a>17. 为什么需要架构分层？并画图说明Core/Service/Shell的职责以及他们之间的关系？</h3><h3 id="18-面向对象的三特性五原则是什么？请分别予以简要解释并以学习过程中的代码为例。"><a href="#18-面向对象的三特性五原则是什么？请分别予以简要解释并以学习过程中的代码为例。" class="headerlink" title="18. 面向对象的三特性五原则是什么？请分别予以简要解释并以学习过程中的代码为例。"></a>18. 面向对象的三特性五原则是什么？请分别予以简要解释并以学习过程中的代码为例。</h3><h3 id="19-Ajax是什么，有什么用？"><a href="#19-Ajax是什么，有什么用？" class="headerlink" title="19. Ajax是什么，有什么用？"></a>19. Ajax是什么，有什么用？</h3><h3 id="20-mockito是什么，用代码大概描述下使用方法和应用场景"><a href="#20-mockito是什么，用代码大概描述下使用方法和应用场景" class="headerlink" title="20. mockito是什么，用代码大概描述下使用方法和应用场景"></a>20. mockito是什么，用代码大概描述下使用方法和应用场景</h3><h3 id="21-一个完整的测试代码至少应该包含哪几个部分？每个部分的租用是什么？"><a href="#21-一个完整的测试代码至少应该包含哪几个部分？每个部分的租用是什么？" class="headerlink" title="21. 一个完整的测试代码至少应该包含哪几个部分？每个部分的租用是什么？"></a>21. 一个完整的测试代码至少应该包含哪几个部分？每个部分的租用是什么？</h3><h3 id="22-CSS盒子模型是什么？"><a href="#22-CSS盒子模型是什么？" class="headerlink" title="22.CSS盒子模型是什么？"></a>22.CSS盒子模型是什么？</h3><h3 id="23-如何使用Spring-Data进行复杂的查询？写一个例子"><a href="#23-如何使用Spring-Data进行复杂的查询？写一个例子" class="headerlink" title="23.如何使用Spring Data进行复杂的查询？写一个例子"></a>23.如何使用Spring Data进行复杂的查询？写一个例子</h3><h3 id="24-Git分支是什么？他的主要应用场景是什么？"><a href="#24-Git分支是什么？他的主要应用场景是什么？" class="headerlink" title="24. Git分支是什么？他的主要应用场景是什么？"></a>24. Git分支是什么？他的主要应用场景是什么？</h3><h3 id="25-解释什么是SUT和DOC，以及他们之间的关系"><a href="#25-解释什么是SUT和DOC，以及他们之间的关系" class="headerlink" title="25.解释什么是SUT和DOC，以及他们之间的关系"></a>25.解释什么是SUT和DOC，以及他们之间的关系</h3><h3 id="26-为何要做DB-Migration？"><a href="#26-为何要做DB-Migration？" class="headerlink" title="26. 为何要做DB Migration？"></a>26. 为何要做DB Migration？</h3><h3 id="27-在开发阶段如何使用Flyway进行数据库管理？"><a href="#27-在开发阶段如何使用Flyway进行数据库管理？" class="headerlink" title="27.  在开发阶段如何使用Flyway进行数据库管理？"></a>27.  在开发阶段如何使用Flyway进行数据库管理？</h3><h3 id="28-为什么使用了Annotation标记过后的类会被Spring找到"><a href="#28-为什么使用了Annotation标记过后的类会被Spring找到" class="headerlink" title="28. 为什么使用了Annotation标记过后的类会被Spring找到"></a>28. 为什么使用了Annotation标记过后的类会被Spring找到</h3><h3 id="29-Spring-Boot与Spring-MVC的区别，以及他们主要的作用"><a href="#29-Spring-Boot与Spring-MVC的区别，以及他们主要的作用" class="headerlink" title="29. Spring Boot与Spring MVC的区别，以及他们主要的作用"></a>29. Spring Boot与Spring MVC的区别，以及他们主要的作用</h3><h3 id="30-举例说明DTO是什么及其作用"><a href="#30-举例说明DTO是什么及其作用" class="headerlink" title="30. 举例说明DTO是什么及其作用"></a>30. 举例说明DTO是什么及其作用</h3><h3 id="31-如果你是一个team-leader，当团队接到一个新项目时，请为以下几个问题提供可落地解决方案。"><a href="#31-如果你是一个team-leader，当团队接到一个新项目时，请为以下几个问题提供可落地解决方案。" class="headerlink" title="31. 如果你是一个team leader，当团队接到一个新项目时，请为以下几个问题提供可落地解决方案。"></a>31. 如果你是一个team leader，当团队接到一个新项目时，请为以下几个问题提供可落地解决方案。</h3><ol>
+<li><h4 id="如何让团队站在业务视角理解和确认用户的需求"><a href="#如何让团队站在业务视角理解和确认用户的需求" class="headerlink" title="如何让团队站在业务视角理解和确认用户的需求"></a>如何让团队站在业务视角理解和确认用户的需求</h4></li>
+<li><h4 id="当用户需求确认以后，如何将需求转换为团队的工作任务"><a href="#当用户需求确认以后，如何将需求转换为团队的工作任务" class="headerlink" title="当用户需求确认以后，如何将需求转换为团队的工作任务"></a>当用户需求确认以后，如何将需求转换为团队的工作任务</h4></li>
+<li><h4 id="当团队协作，并行工作提交代码时，如何避免因为冲突二造成的协作混乱"><a href="#当团队协作，并行工作提交代码时，如何避免因为冲突二造成的协作混乱" class="headerlink" title="当团队协作，并行工作提交代码时，如何避免因为冲突二造成的协作混乱"></a>当团队协作，并行工作提交代码时，如何避免因为冲突二造成的协作混乱</h4></li>
+</ol>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/Java/" rel="tag"># Java</a>
+          
+            <a href="/tags/React/" rel="tag"># React</a>
+          
+            <a href="/tags/Spring/" rel="tag"># Spring</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2018/08/20/后端总结/" rel="next" title="后端总结">
+                <i class="fa fa-chevron-left"></i> 后端总结
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2018/08/22/spring-boot版本迁移中的坑/" rel="prev" title="Spring Boot 版本迁移中的坑">
+                Spring Boot 版本迁移中的坑 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+    <div class="comments" id="comments">
+    </div>
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            Table of Contents
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            Overview
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image"
+                src="http://images2.imagebam.com/ae/1d/82/61f4331096064134.jpeg"
+                alt="ThxNo" />
+            
+              <p class="site-author-name" itemprop="name">ThxNo</p>
+              <p class="site-description motion-element" itemprop="description"></p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">25</span>
+                  <span class="site-state-item-name">posts</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">10</span>
+                  <span class="site-state-item-name">categories</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">40</span>
+                  <span class="site-state-item-name">tags</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-在只使用React的前提下，从页面上触发修改到你看到页面变化，中间发生了什么？（描述中包含React的机制和如何用代码进行实现两方面）"><span class="nav-number">1.</span> <span class="nav-text">1. 在只使用React的前提下，从页面上触发修改到你看到页面变化，中间发生了什么？（描述中包含React的机制和如何用代码进行实现两方面）</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-如何通过Spring-Data-JPA实现1-to-1，1-to-n，n-to-n的实体关系，并分别为三个关系列举一个场景。"><span class="nav-number">2.</span> <span class="nav-text">2. 如何通过Spring Data JPA实现1 to 1，1 to n，n to n的实体关系，并分别为三个关系列举一个场景。</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-Tasking的作用是什么？划分时有哪些原则？"><span class="nav-number">3.</span> <span class="nav-text">3. Tasking的作用是什么？划分时有哪些原则？</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4-在使用Redux的前提下，从在页面上触发修改到看到页面变化，中间发生了什么？（描述包含Redux的机制和如何使用代码实现两方面）"><span class="nav-number">4.</span> <span class="nav-text">4. 在使用Redux的前提下，从在页面上触发修改到看到页面变化，中间发生了什么？（描述包含Redux的机制和如何使用代码实现两方面）</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#5-当一个基于HTTP的API请求发送到WEB服务器，接着服务器返回信息，Spring-MVC做了哪些事情？（描述中包含Spring-MVC的机制和代码实现）"><span class="nav-number">5.</span> <span class="nav-text">5. 当一个基于HTTP的API请求发送到WEB服务器，接着服务器返回信息，Spring MVC做了哪些事情？（描述中包含Spring MVC的机制和代码实现）</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#6-什么是TDD？TDD有何优点？TDD流程？"><span class="nav-number">6.</span> <span class="nav-text">6. 什么是TDD？TDD有何优点？TDD流程？</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#7-js中this引用为什么会变成undefined，强制绑定this引用的方式有哪几种，分别写出实例代码。"><span class="nav-number">7.</span> <span class="nav-text">7. js中this引用为什么会变成undefined，强制绑定this引用的方式有哪几种，分别写出实例代码。</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#8-HTTP的状态码有哪几类？常见的有哪些？分别表示什么含义？"><span class="nav-number">8.</span> <span class="nav-text">8. HTTP的状态码有哪几类？常见的有哪些？分别表示什么含义？</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#9-常见的需要重构的坏味道有哪些？以及他们的影响？（至少写5个）"><span class="nav-number">9.</span> <span class="nav-text">9. 常见的需要重构的坏味道有哪些？以及他们的影响？（至少写5个）</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#10-jQuery下取得一个id为”my-input”的input的值得代码怎么写？"><span class="nav-number">10.</span> <span class="nav-text">10. jQuery下取得一个id为”my_input”的input的值得代码怎么写？</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#11-为一个id为”my-form”下的type为submit的button绑定点击事件的代码怎么写？"><span class="nav-number">11.</span> <span class="nav-text">11.为一个id为”my_form”下的type为submit的button绑定点击事件的代码怎么写？</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#12-如何为RestController写API测试，写出伪代码例子，如何为Repository写单元测试，写出伪代码例子，什么是对象、类、实例？他们之间的关系是怎样的？"><span class="nav-number">12.</span> <span class="nav-text">12. 如何为RestController写API测试，写出伪代码例子，如何为Repository写单元测试，写出伪代码例子，什么是对象、类、实例？他们之间的关系是怎样的？</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#13-使用React时，如何获得某个input的值？"><span class="nav-number">13.</span> <span class="nav-text">13. 使用React时，如何获得某个input的值？</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#14-通过例子说明Restful-API"><span class="nav-number">14.</span> <span class="nav-text">14.通过例子说明Restful API</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#15-解释下Callback是什么，举个例子"><span class="nav-number">15.</span> <span class="nav-text">15. 解释下Callback是什么，举个例子</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#16-在使用React-Router，并给一个按钮绑定点击事件处理函数时，如何在事件处理函数中用js进行页面跳转"><span class="nav-number">16.</span> <span class="nav-text">16.在使用React Router，并给一个按钮绑定点击事件处理函数时，如何在事件处理函数中用js进行页面跳转</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#17-为什么需要架构分层？并画图说明Core-Service-Shell的职责以及他们之间的关系？"><span class="nav-number">17.</span> <span class="nav-text">17. 为什么需要架构分层？并画图说明Core/Service/Shell的职责以及他们之间的关系？</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#18-面向对象的三特性五原则是什么？请分别予以简要解释并以学习过程中的代码为例。"><span class="nav-number">18.</span> <span class="nav-text">18. 面向对象的三特性五原则是什么？请分别予以简要解释并以学习过程中的代码为例。</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#19-Ajax是什么，有什么用？"><span class="nav-number">19.</span> <span class="nav-text">19. Ajax是什么，有什么用？</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#20-mockito是什么，用代码大概描述下使用方法和应用场景"><span class="nav-number">20.</span> <span class="nav-text">20. mockito是什么，用代码大概描述下使用方法和应用场景</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#21-一个完整的测试代码至少应该包含哪几个部分？每个部分的租用是什么？"><span class="nav-number">21.</span> <span class="nav-text">21. 一个完整的测试代码至少应该包含哪几个部分？每个部分的租用是什么？</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#22-CSS盒子模型是什么？"><span class="nav-number">22.</span> <span class="nav-text">22.CSS盒子模型是什么？</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#23-如何使用Spring-Data进行复杂的查询？写一个例子"><span class="nav-number">23.</span> <span class="nav-text">23.如何使用Spring Data进行复杂的查询？写一个例子</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#24-Git分支是什么？他的主要应用场景是什么？"><span class="nav-number">24.</span> <span class="nav-text">24. Git分支是什么？他的主要应用场景是什么？</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#25-解释什么是SUT和DOC，以及他们之间的关系"><span class="nav-number">25.</span> <span class="nav-text">25.解释什么是SUT和DOC，以及他们之间的关系</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#26-为何要做DB-Migration？"><span class="nav-number">26.</span> <span class="nav-text">26. 为何要做DB Migration？</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#27-在开发阶段如何使用Flyway进行数据库管理？"><span class="nav-number">27.</span> <span class="nav-text">27.  在开发阶段如何使用Flyway进行数据库管理？</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#28-为什么使用了Annotation标记过后的类会被Spring找到"><span class="nav-number">28.</span> <span class="nav-text">28. 为什么使用了Annotation标记过后的类会被Spring找到</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#29-Spring-Boot与Spring-MVC的区别，以及他们主要的作用"><span class="nav-number">29.</span> <span class="nav-text">29. Spring Boot与Spring MVC的区别，以及他们主要的作用</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#30-举例说明DTO是什么及其作用"><span class="nav-number">30.</span> <span class="nav-text">30. 举例说明DTO是什么及其作用</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#31-如果你是一个team-leader，当团队接到一个新项目时，请为以下几个问题提供可落地解决方案。"><span class="nav-number">31.</span> <span class="nav-text">31. 如果你是一个team leader，当团队接到一个新项目时，请为以下几个问题提供可落地解决方案。</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#如何让团队站在业务视角理解和确认用户的需求"><span class="nav-number">31.1.</span> <span class="nav-text">如何让团队站在业务视角理解和确认用户的需求</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#当用户需求确认以后，如何将需求转换为团队的工作任务"><span class="nav-number">31.2.</span> <span class="nav-text">当用户需求确认以后，如何将需求转换为团队的工作任务</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#当团队协作，并行工作提交代码时，如何避免因为冲突二造成的协作混乱"><span class="nav-number">31.3.</span> <span class="nav-text">当团队协作，并行工作提交代码时，如何避免因为冲突二造成的协作混乱</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2019</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">ThxNo</span>
+
+  
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-area-chart"></i>
+    </span>
+    
+      <span class="post-meta-item-text">Site words total count&#58;</span>
+    
+    <span title="Site words total count">21.3k</span>
+  
+</div>
+
+
+  <div class="powered-by">Powered by <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a></div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">Theme &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Pisces</a> v5.1.4</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.4"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+  <script src="//cdn1.lncld.net/static/js/3.0.4/av-min.js"></script>
+  <script src="//unpkg.com/valine/dist/Valine.min.js"></script>
+  
+  <script type="text/javascript">
+    var GUEST = ['nick','mail','link'];
+    var guest = 'nick,mail,link';
+    guest = guest.split(',').filter(item=>{
+      return GUEST.indexOf(item)>-1;
+    });
+    new Valine({
+        el: '#comments' ,
+        verify: false,
+        notify: false,
+        appId: 'aGNlTNHsADJeMelfOmYt4M4k-gzGzoHsz',
+        appKey: '5zjTJ5D5ineFHJ0TRNICjNVz',
+        placeholder: 'Comments',
+        avatar:'mm',
+        guest_info:guest,
+        pageSize:'10' || 10,
+    });
+  </script>
+
+
+
+  
+
+  <script type="text/javascript">
+    // Popup Window;
+    var isfetched = false;
+    var isXml = true;
+    // Search DB path;
+    var search_path = "search.xml";
+    if (search_path.length === 0) {
+      search_path = "search.xml";
+    } else if (/json$/i.test(search_path)) {
+      isXml = false;
+    }
+    var path = "/" + search_path;
+    // monitor main search box;
+
+    var onPopupClose = function (e) {
+      $('.popup').hide();
+      $('#local-search-input').val('');
+      $('.search-result-list').remove();
+      $('#no-result').remove();
+      $(".local-search-pop-overlay").remove();
+      $('body').css('overflow', '');
+    }
+
+    function proceedsearch() {
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay"></div>')
+        .css('overflow', 'hidden');
+      $('.search-popup-overlay').click(onPopupClose);
+      $('.popup').toggle();
+      var $localSearchInput = $('#local-search-input');
+      $localSearchInput.attr("autocapitalize", "none");
+      $localSearchInput.attr("autocorrect", "off");
+      $localSearchInput.focus();
+    }
+
+    // search function;
+    var searchFunc = function(path, search_id, content_id) {
+      'use strict';
+
+      // start loading animation
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay">' +
+          '<div id="search-loading-icon">' +
+          '<i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>' +
+          '</div>' +
+          '</div>')
+        .css('overflow', 'hidden');
+      $("#search-loading-icon").css('margin', '20% auto 0 auto').css('text-align', 'center');
+
+      $.ajax({
+        url: path,
+        dataType: isXml ? "xml" : "json",
+        async: true,
+        success: function(res) {
+          // get the contents from search data
+          isfetched = true;
+          $('.popup').detach().appendTo('.header-inner');
+          var datas = isXml ? $("entry", res).map(function() {
+            return {
+              title: $("title", this).text(),
+              content: $("content",this).text(),
+              url: $("url" , this).text()
+            };
+          }).get() : res;
+          var input = document.getElementById(search_id);
+          var resultContent = document.getElementById(content_id);
+          var inputEventFunction = function() {
+            var searchText = input.value.trim().toLowerCase();
+            var keywords = searchText.split(/[\s\-]+/);
+            if (keywords.length > 1) {
+              keywords.push(searchText);
+            }
+            var resultItems = [];
+            if (searchText.length > 0) {
+              // perform local searching
+              datas.forEach(function(data) {
+                var isMatch = false;
+                var hitCount = 0;
+                var searchTextCount = 0;
+                var title = data.title.trim();
+                var titleInLowerCase = title.toLowerCase();
+                var content = data.content.trim().replace(/<[^>]+>/g,"");
+                var contentInLowerCase = content.toLowerCase();
+                var articleUrl = decodeURIComponent(data.url);
+                var indexOfTitle = [];
+                var indexOfContent = [];
+                // only match articles with not empty titles
+                if(title != '') {
+                  keywords.forEach(function(keyword) {
+                    function getIndexByWord(word, text, caseSensitive) {
+                      var wordLen = word.length;
+                      if (wordLen === 0) {
+                        return [];
+                      }
+                      var startPosition = 0, position = [], index = [];
+                      if (!caseSensitive) {
+                        text = text.toLowerCase();
+                        word = word.toLowerCase();
+                      }
+                      while ((position = text.indexOf(word, startPosition)) > -1) {
+                        index.push({position: position, word: word});
+                        startPosition = position + wordLen;
+                      }
+                      return index;
+                    }
+
+                    indexOfTitle = indexOfTitle.concat(getIndexByWord(keyword, titleInLowerCase, false));
+                    indexOfContent = indexOfContent.concat(getIndexByWord(keyword, contentInLowerCase, false));
+                  });
+                  if (indexOfTitle.length > 0 || indexOfContent.length > 0) {
+                    isMatch = true;
+                    hitCount = indexOfTitle.length + indexOfContent.length;
+                  }
+                }
+
+                // show search results
+
+                if (isMatch) {
+                  // sort index by position of keyword
+
+                  [indexOfTitle, indexOfContent].forEach(function (index) {
+                    index.sort(function (itemLeft, itemRight) {
+                      if (itemRight.position !== itemLeft.position) {
+                        return itemRight.position - itemLeft.position;
+                      } else {
+                        return itemLeft.word.length - itemRight.word.length;
+                      }
+                    });
+                  });
+
+                  // merge hits into slices
+
+                  function mergeIntoSlice(text, start, end, index) {
+                    var item = index[index.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    var hits = [];
+                    var searchTextCountInSlice = 0;
+                    while (position + word.length <= end && index.length != 0) {
+                      if (word === searchText) {
+                        searchTextCountInSlice++;
+                      }
+                      hits.push({position: position, length: word.length});
+                      var wordEnd = position + word.length;
+
+                      // move to next position of hit
+
+                      index.pop();
+                      while (index.length != 0) {
+                        item = index[index.length - 1];
+                        position = item.position;
+                        word = item.word;
+                        if (wordEnd > position) {
+                          index.pop();
+                        } else {
+                          break;
+                        }
+                      }
+                    }
+                    searchTextCount += searchTextCountInSlice;
+                    return {
+                      hits: hits,
+                      start: start,
+                      end: end,
+                      searchTextCount: searchTextCountInSlice
+                    };
+                  }
+
+                  var slicesOfTitle = [];
+                  if (indexOfTitle.length != 0) {
+                    slicesOfTitle.push(mergeIntoSlice(title, 0, title.length, indexOfTitle));
+                  }
+
+                  var slicesOfContent = [];
+                  while (indexOfContent.length != 0) {
+                    var item = indexOfContent[indexOfContent.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    // cut out 100 characters
+                    var start = position - 20;
+                    var end = position + 80;
+                    if(start < 0){
+                      start = 0;
+                    }
+                    if (end < position + word.length) {
+                      end = position + word.length;
+                    }
+                    if(end > content.length){
+                      end = content.length;
+                    }
+                    slicesOfContent.push(mergeIntoSlice(content, start, end, indexOfContent));
+                  }
+
+                  // sort slices in content by search text's count and hits' count
+
+                  slicesOfContent.sort(function (sliceLeft, sliceRight) {
+                    if (sliceLeft.searchTextCount !== sliceRight.searchTextCount) {
+                      return sliceRight.searchTextCount - sliceLeft.searchTextCount;
+                    } else if (sliceLeft.hits.length !== sliceRight.hits.length) {
+                      return sliceRight.hits.length - sliceLeft.hits.length;
+                    } else {
+                      return sliceLeft.start - sliceRight.start;
+                    }
+                  });
+
+                  // select top N slices in content
+
+                  var upperBound = parseInt('-1');
+                  if (upperBound >= 0) {
+                    slicesOfContent = slicesOfContent.slice(0, upperBound);
+                  }
+
+                  // highlight title and content
+
+                  function highlightKeyword(text, slice) {
+                    var result = '';
+                    var prevEnd = slice.start;
+                    slice.hits.forEach(function (hit) {
+                      result += text.substring(prevEnd, hit.position);
+                      var end = hit.position + hit.length;
+                      result += '<b class="search-keyword">' + text.substring(hit.position, end) + '</b>';
+                      prevEnd = end;
+                    });
+                    result += text.substring(prevEnd, slice.end);
+                    return result;
+                  }
+
+                  var resultItem = '';
+
+                  if (slicesOfTitle.length != 0) {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + highlightKeyword(title, slicesOfTitle[0]) + "</a>";
+                  } else {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + title + "</a>";
+                  }
+
+                  slicesOfContent.forEach(function (slice) {
+                    resultItem += "<a href='" + articleUrl + "'>" +
+                      "<p class=\"search-result\">" + highlightKeyword(content, slice) +
+                      "...</p>" + "</a>";
+                  });
+
+                  resultItem += "</li>";
+                  resultItems.push({
+                    item: resultItem,
+                    searchTextCount: searchTextCount,
+                    hitCount: hitCount,
+                    id: resultItems.length
+                  });
+                }
+              })
+            };
+            if (keywords.length === 1 && keywords[0] === "") {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-search fa-5x" /></div>'
+            } else if (resultItems.length === 0) {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-frown-o fa-5x" /></div>'
+            } else {
+              resultItems.sort(function (resultLeft, resultRight) {
+                if (resultLeft.searchTextCount !== resultRight.searchTextCount) {
+                  return resultRight.searchTextCount - resultLeft.searchTextCount;
+                } else if (resultLeft.hitCount !== resultRight.hitCount) {
+                  return resultRight.hitCount - resultLeft.hitCount;
+                } else {
+                  return resultRight.id - resultLeft.id;
+                }
+              });
+              var searchResultList = '<ul class=\"search-result-list\">';
+              resultItems.forEach(function (result) {
+                searchResultList += result.item;
+              })
+              searchResultList += "</ul>";
+              resultContent.innerHTML = searchResultList;
+            }
+          }
+
+          if ('auto' === 'auto') {
+            input.addEventListener('input', inputEventFunction);
+          } else {
+            $('.search-icon').click(inputEventFunction);
+            input.addEventListener('keypress', function (event) {
+              if (event.keyCode === 13) {
+                inputEventFunction();
+              }
+            });
+          }
+
+          // remove loading animation
+          $(".local-search-pop-overlay").remove();
+          $('body').css('overflow', '');
+
+          proceedsearch();
+        }
+      });
+    }
+
+    // handle and trigger popup window;
+    $('.popup-trigger').click(function(e) {
+      e.stopPropagation();
+      if (isfetched === false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+    });
+
+    $('.popup-btn-close').click(onPopupClose);
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+    $(document).on('keyup', function (event) {
+      var shouldDismissSearchPopup = event.which === 27 &&
+        $('.search-popup').is(':visible');
+      if (shouldDismissSearchPopup) {
+        onPopupClose();
+      }
+    });
+  </script>
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>
