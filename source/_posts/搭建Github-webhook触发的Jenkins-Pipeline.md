@@ -146,3 +146,4 @@ pipeline {
 ```
 
 然后将代码push到github, 便能够看到Jenkins自动运行流水线.
+
